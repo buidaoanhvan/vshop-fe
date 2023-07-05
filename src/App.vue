@@ -32,7 +32,9 @@
         class="header"
       >
         <a-dropdown>
-          <a-avatar>{{ user?.fullname?.charAt(0) }}</a-avatar>
+          <a-avatar style="background-color: #1890ff">{{
+            user?.fullname?.charAt(0)
+          }}</a-avatar>
 
           <template #overlay>
             <a-menu>
@@ -61,7 +63,7 @@ import {
   BarcodeOutlined,
   TeamOutlined,
   SendOutlined,
-  DashboardOutlined,
+  QrcodeOutlined,
   BranchesOutlined,
   PullRequestOutlined,
 } from "@ant-design/icons-vue";
@@ -81,7 +83,7 @@ export default {
     BarcodeOutlined,
     TeamOutlined,
     SendOutlined,
-    DashboardOutlined,
+    QrcodeOutlined,
     BranchesOutlined,
     PullRequestOutlined,
     LoadingVue,
@@ -92,26 +94,26 @@ export default {
         {
           routerName: "tongquan",
           key: "tongquan",
-          title: "Tổng quan",
-          icon: "DashboardOutlined",
+          title: "Quét Mã QR",
+          icon: "QrcodeOutlined",
         },
         {
-          routerName: "thuonghieu",
-          key: "thuonghieu",
-          title: "Thương hiệu",
+          routerName: "cuahang",
+          key: "cuahang",
+          title: "Cửa Hàng",
           icon: "ShopOutlined",
-        },
-        {
-          routerName: "doitac",
-          key: "doitac",
-          title: "Đối tác",
-          icon: "BankOutlined",
         },
         {
           routerName: "voucher",
           key: "voucher",
           title: "Voucher",
           icon: "BarcodeOutlined",
+        },
+        {
+          routerName: "doitac",
+          key: "doitac",
+          title: "Đối tác",
+          icon: "BankOutlined",
         },
         {
           routerName: "layvoucher",

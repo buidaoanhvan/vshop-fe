@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "@/views/LoginView.vue";
 import HomeViewVue from "@/views/HomeView.vue";
 import UserViewVue from "../views/UserView.vue";
-import BrandView from "@/views/BrandView.vue";
+import ShopView from "@/views/ShopView.vue";
 import SupplierView from "@/views/SupplierView.vue";
 import VoucherView from "../views/VoucherView.vue";
 import PathNotFound from "../views/PathNotFound.vue";
@@ -29,9 +29,9 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: "/thuonghieu",
-    name: "thuonghieu",
-    component: BrandView,
+    path: "/cuahang",
+    name: "cuahang",
+    component: ShopView,
     meta: { requiresAuth: true },
   },
   {

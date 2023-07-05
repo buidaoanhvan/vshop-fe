@@ -9,8 +9,8 @@
       }"
     >
       <a-row>
-        <a-typography-title :level="3">Thương hiệu</a-typography-title>
-        <AddBrand></AddBrand>
+        <a-typography-title :level="3">Thêm Cửa Hàng</a-typography-title>
+        <AddShop></AddShop>
       </a-row>
       <div
         :style="{
@@ -19,9 +19,9 @@
           overflow: 'auto',
         }"
       >
-        <a-list
+        <!-- <a-list
           :grid="{ gutter: 20 }"
-          :data-source="listBrand"
+          :data-source="listShop"
           style="overflow-x: hidden"
         >
           <template #renderItem="{ item }">
@@ -40,41 +40,101 @@
                 </template>
                 <a-card-meta :title="item.name"> </a-card-meta>
                 <template #actions>
-                  <EditBrand :brand="item"></EditBrand>
-                  <a key="list-loadmore-more" @click="deleteBrand(item.id)"
+                  <EditShop :shop="item"></EditShop>
+                  <a key="list-loadmore-more" @click="deleteShop(item.id)"
                     >Xóa</a
                   >
                 </template>
               </a-card>
             </a-list-item>
           </template>
-        </a-list>
+        </a-list> -->
+        <a-table
+          :columns="columns"
+          :data-source="listSupplier"
+          :pagination="false"
+        >
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.key === 'email'">
+              {{ record.name }}
+            </template>
+            <template v-else-if="column.key === 'shop_address'">
+              <span>
+                <EditShop :supplier="record"></EditShop>
+                <a-divider type="vertical" />
+                <a @click="deleteShop(item.id)">Xóa</a>
+              </span>
+            </template>
+          </template>
+        </a-table>
       </div>
     </div>
   </a-layout-content>
 </template>
 <script>
-import AddBrand from "../components/Brand/AddBrand.vue";
-import EditBrand from "../components/Brand/EditBrand.vue";
+import AddShop from "../components/Shop/AddShop.vue";
+import EditShop from "../components/Shop/EditShop.vue";
 import { storeToRefs } from "pinia";
-import { brandStore } from "../store/index";
+import { shopStore } from "../store/index";
 
 export default {
-  components: { AddBrand, EditBrand },
+  components: { AddShop, EditShop },
 
   setup() {
-    const brand = brandStore();
-    const { listBrand } = storeToRefs(brand);
-    return { brand, listBrand };
+    const shop = shopStore();
+    const { listShop } = storeToRefs(shop);
+    return { shop, listShop };
+  },
+
+  data() {
+    return {
+      columns: [
+        {
+          title: "Email",
+          dataIndex: "email",
+          key: "email",
+        },
+        {
+          title: "Password",
+          dataIndex: "password",
+          key: "password",
+        },
+        {
+          title: "Họ Tên",
+          dataIndex: "fullname",
+          key: "fullname",
+        },
+        {
+          title: "SĐT",
+          dataIndex: "phone",
+          key: "phone",
+        },
+        {
+          title: "Tên Cửa Hàng",
+          dataIndex: "shop_name",
+          key: "shop_name",
+        },
+        {
+          title: "Logo",
+          dataIndex: "shop_logo",
+          key: "shop_logo",
+        },
+        {
+          title: "Địa Chỉ Cửa Hàng",
+          dataIndex: "shop_address",
+          key: "shop_address",
+        },
+      ],
+    };
   },
 
   created() {
-    this.brand.getBrandAll();
+    this.shop.getShopAll();
   },
 
   methods: {
-    deleteBrand(id) {
-      this.brand.deleteBrand(id);
+    deleteShop(id) {
+      this.shop.deleteShop(id);
     },
   },
 };

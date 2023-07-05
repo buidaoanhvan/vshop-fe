@@ -28,20 +28,20 @@
           placeholder="Mô tả"
           style="margin-bottom: 15px"
         />
-        <!-- Thương hiệu cung cấp: -->
+        <!-- Cửa Hàng cung cấp: -->
         <div class="select-box">
           <a-typography-text type="secondary"
-            >Thương hiệu cung cấp:</a-typography-text
+            >Cửa Hàng cung cấp:</a-typography-text
           >
           <a-select
-            v-model:value="brandId"
+            v-model:value="shopId"
             show-search
-            placeholder="Chọn thương hiệu"
+            placeholder="Chọn Cửa Hàng"
             style="width: 100%; margin-bottom: 15px"
-            :options="listBrand"
-            :filter-option="filterBrand"
+            :options="listShop"
+            :filter-option="filterShop"
             :fieldNames="{ label: 'name', value: 'id' }"
-            @change="handleChangeBrand"
+            @change="handleChangeShop"
           ></a-select>
         </div>
         <!-- Ngày bắt đầu: -->
@@ -123,20 +123,20 @@
   </a-modal>
 </template>
 <script>
-import { brandStore, supplierStore, voucherStore, authStore } from "@/store";
+import { shopStore, supplierStore, voucherStore, authStore } from "@/store";
 import { storeToRefs } from "pinia";
 import { UploadOutlined } from "@ant-design/icons-vue";
 import api_link from "@/configs/api";
 
 export default {
   setup() {
-    const brandS = brandStore();
+    const shopS = shopStore();
     const supplierS = supplierStore();
     const voucherS = voucherStore();
     const auth = authStore();
-    const { listBrand } = storeToRefs(brandS);
+    const { listShop } = storeToRefs(shopS);
     const { listSupplier } = storeToRefs(supplierS);
-    return { brandS, supplierS, listBrand, listSupplier, voucherS, auth };
+    return { shopS, supplierS, listShop, listSupplier, voucherS, auth };
   },
   components: {
     UploadOutlined,
@@ -145,7 +145,7 @@ export default {
     return {
       visible: false,
       supplierId: "",
-      brandId: "",
+      shopId: "",
       title: "",
       description: "",
       discount_value: "",
@@ -179,7 +179,7 @@ export default {
   methods: {
     showModal() {
       this.visible = true;
-      this.brandS.getBrandAll();
+      this.shopS.getShopAll();
       this.supplierS.getSupplierAll();
     },
 
@@ -187,7 +187,7 @@ export default {
       return option.name.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     },
 
-    filterBrand(input, option) {
+    filterShop(input, option) {
       return option.name.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     },
 
@@ -199,8 +199,8 @@ export default {
       this.discount_type = value;
     },
 
-    handleChangeBrand(value) {
-      this.brandId = value;
+    handleChangeShop(value) {
+      this.shopId = value;
     },
 
     onChangeStart(date) {
@@ -212,7 +212,7 @@ export default {
     },
 
     handleOk() {
-      // <!-- id	brandId	supplierId	title	description	image	status	discount_value	discount_type	max_discount	start_time	end_time -->
+      // <!-- id shopId	supplierId	title	description	image	status	discount_value	discount_type	max_discount	start_time	end_time -->
       if (
         this.title &&
         this.description &&
@@ -227,7 +227,7 @@ export default {
           this.image = element.response.url;
         });
         this.voucherS.addVoucher(
-          this.brandId,
+          this.shopId,
           this.supplierId,
           this.title,
           this.description,
@@ -238,7 +238,7 @@ export default {
           this.start_time,
           this.end_time
         );
-        this.brandId = "";
+        this.shopId = "";
         this.supplierId = "";
         this.title = "";
         this.description = "";

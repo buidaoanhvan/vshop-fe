@@ -3,18 +3,18 @@ import Axios from "axios";
 import api_link from "@/configs/api";
 import { message } from "ant-design-vue";
 
-export const brandStore = defineStore({
-  id: "brand",
+export const shopStore = defineStore({
+  id: "shop",
   state: () => ({
-    listBrand: [],
+    listShop: [],
   }),
 
   actions: {
-    async getBrandAll() {
+    async getShopAll() {
       try {
-        const res = await Axios.get(api_link.brand);
+        const res = await Axios.get(api_link.shop);
         if (res.data.statusCode == 200) {
-          this.listBrand = res.data.data;
+          this.listShop = res.data.data;
         } else {
           // console.log(res.data.message);
         }
@@ -23,12 +23,12 @@ export const brandStore = defineStore({
       }
     },
 
-    async addBrand(name, logo) {
+    async addShop(name, logo) {
       try {
-        const res = await Axios.post(api_link.brand, { name, logo });
+        const res = await Axios.post(api_link.shop, { name, logo });
         if (res.data.statusCode == 200) {
-          this.getBrandAll();
-          message.success("Thành công");
+          this.getShopAll();
+          message.success("Thêm Cửa Hàng Thành công");
         } else {
           message.warning("Vui lòng kiểm tra lại");
         }
@@ -43,14 +43,14 @@ export const brandStore = defineStore({
       }
     },
 
-    async updateBrand(id, name, logo) {
+    async updateShop(id, name, logo) {
       try {
-        const res = await Axios.patch(api_link.brand + "/" + id, {
+        const res = await Axios.patch(api_link.shop + "/" + id, {
           name,
           logo,
         });
         if (res.data.statusCode == 200) {
-          this.getBrandAll();
+          this.getShopAll();
           message.success("Cập nhật thành công");
         } else {
           message.warning("Vui lòng kiểm tra lại");
@@ -66,11 +66,11 @@ export const brandStore = defineStore({
       }
     },
 
-    async deleteBrand(id) {
+    async deleteShop(id) {
       try {
-        const res = await Axios.delete(api_link.brand + "/" + id);
+        const res = await Axios.delete(api_link.shop + "/" + id);
         if (res.data.statusCode == 200) {
-          this.getBrandAll();
+          this.getShopAll();
           message.success("Xóa thành công");
         } else {
           message.warning("Vui lòng kiểm tra lại");
