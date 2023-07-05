@@ -45,14 +45,14 @@
           ></a-select>
         </div>
         <!-- Ngày bắt đầu: -->
-        <!-- <a-typography-text type="secondary">Ngày bắt đầu:</a-typography-text>
+        <a-typography-text type="secondary">Ngày bắt đầu:</a-typography-text>
         <a-date-picker
           show-time
           v-model:value="start_time"
           placeholder="Ngày bắt đầu"
           style="width: 100%; margin-bottom: 15px"
           @change="onChangeStart"
-        /> -->
+        />
         <!-- Hình ảnh: -->
         <a-upload
           v-model:file-list="fileList"
@@ -95,35 +95,21 @@
           placeholder="Giảm tối đa"
           style="margin-bottom: 15px"
         />
-        <!-- Đối tác: -->
-        <!-- <div class="select-box">
-          <a-typography-text type="secondary">Đối tác:</a-typography-text>
-          <a-select
-            v-model:value="supplierId"
-            show-search
-            placeholder="Chọn đối tác"
-            style="width: 100%; margin-bottom: 15px"
-            :options="listSupplier"
-            :filter-option="filterSupplier"
-            :fieldNames="{ label: 'name', value: 'id' }"
-            @change="handleChangeSupplier"
-          ></a-select>
-        </div> -->
         <!-- Ngày kết thúc: -->
-        <!-- <a-typography-text type="secondary">Ngày kết thúc:</a-typography-text>
+        <a-typography-text type="secondary">Ngày kết thúc:</a-typography-text>
         <a-date-picker
           show-time
           v-model:value="end_time"
           placeholder="Ngày kết thúc"
           style="width: 100%; margin-bottom: 15px"
           @change="onChangeEnd"
-        /> -->
+        />
       </a-col>
     </a-row>
   </a-modal>
 </template>
 <script>
-import { shopStore, supplierStore, voucherStore, authStore } from "@/store";
+import { shopStore, voucherStore, authStore } from "@/store";
 import { storeToRefs } from "pinia";
 import { UploadOutlined } from "@ant-design/icons-vue";
 import api_link from "@/configs/api";
@@ -131,12 +117,10 @@ import api_link from "@/configs/api";
 export default {
   setup() {
     const shopS = shopStore();
-    const supplierS = supplierStore();
     const voucherS = voucherStore();
     const auth = authStore();
     const { listShop } = storeToRefs(shopS);
-    const { listSupplier } = storeToRefs(supplierS);
-    return { shopS, supplierS, listShop, listSupplier, voucherS, auth };
+    return { shopS, listShop, voucherS, auth };
   },
   components: {
     UploadOutlined,
@@ -151,8 +135,8 @@ export default {
       discount_type: "",
       max_discount: "",
       image: "",
-      // start_time: "",
-      // end_time: "",
+      start_time: "",
+      end_time: "",
       fileList: [],
       options_discount_type: [
         {
@@ -179,11 +163,6 @@ export default {
     showModal() {
       this.visible = true;
       this.shopS.getShopAll();
-      this.supplierS.getSupplierAll();
-    },
-
-    filterSupplier(input, option) {
-      return option.name.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     },
 
     filterShop(input, option) {
@@ -198,24 +177,24 @@ export default {
       this.shop_id = value;
     },
 
-    // onChangeStart(date) {
-    //   this.start_time = date;
-    // },
+    onChangeStart(date) {
+      this.start_time = date;
+    },
 
-    // onChangeEnd(date) {
-    //   this.end_time = date;
-    // },
+    onChangeEnd(date) {
+      this.end_time = date;
+    },
 
     handleOk() {
-      // <!-- id shopId	supplierId	title	description	image	status	discount_value	discount_type	max_discount	start_time	end_time -->
+      // <!-- id shopId	title	description	image	status	discount_value	discount_type	max_discount	start_time	end_time -->
       if (
         this.title &&
         this.description &&
         this.discount_value &&
         this.discount_type &&
         this.max_discount &&
-        // this.start_time &&
-        // this.end_time &&
+        this.start_time &&
+        this.end_time &&
         this.fileList.length > 0
       ) {
         this.fileList.forEach((element) => {
@@ -228,9 +207,9 @@ export default {
           this.image,
           parseInt(this.discount_value),
           parseInt(this.discount_type),
-          parseInt(this.max_discount)
-          // this.start_time,
-          // this.end_time
+          parseInt(this.max_discount),
+          this.start_time,
+          this.end_time
         );
         this.shop_id = "";
         this.title = "";
@@ -239,8 +218,8 @@ export default {
         this.discount_value = "";
         this.discount_type = "";
         this.max_discount = "";
-        // this.start_time = "";
-        // this.end_time = "";
+        this.start_time = "";
+        this.end_time = "";
         this.fileList = [];
         this.visible = false;
       } else {

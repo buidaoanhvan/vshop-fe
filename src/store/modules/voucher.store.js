@@ -14,7 +14,7 @@ export const voucherStore = defineStore({
       try {
         const res = await Axios.get(api_link.voucher);
         // console.log(res.data);
-        if (res.data.statusCode == "00") {
+        if (res.data.code == "00") {
           this.listVoucher = res.data.data;
         } else {
           // console.log(res.data.message);
@@ -47,8 +47,8 @@ export const voucherStore = defineStore({
           start_time,
           end_time,
         });
-        console.log(res);
-        if (res.data.statusCode == 200) {
+        // console.log(res);
+        if (res.data.code == "00") {
           this.getVoucherAll();
           message.success("Thành công");
         } else {
@@ -78,7 +78,7 @@ export const voucherStore = defineStore({
       end_time
     ) {
       try {
-        const res = await Axios.patch(api_link.voucher + "/" + id, {
+        const res = await Axios.patch(api_link.voucher_update + "/" + id, {
           shop_id,
           title,
           description,
@@ -89,7 +89,7 @@ export const voucherStore = defineStore({
           start_time,
           end_time,
         });
-        if (res.data.statusCode == 200) {
+        if (res.data.code == "00") {
           this.getVoucherAll();
           message.success("Cập nhật thành công");
         } else {
