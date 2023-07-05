@@ -9,6 +9,7 @@ import VoucherView from "../views/VoucherView.vue";
 import PathNotFound from "../views/PathNotFound.vue";
 import SegmentView from "../views/SegmentView.vue";
 import SegmentRequestView from "../views/SegmentRequestView.vue";
+import TestCam from "../views/TestCam.vue";
 
 const routes = [
   {
@@ -64,6 +65,12 @@ const routes = [
     name: "yeucau",
     component: SegmentRequestView,
     meta: { requiresAuth: true },
+  },
+  {
+    path: "/testcam",
+    name: "testcam",
+    component: TestCam,
+    meta: { requiresAuth: false },
   },
   {
     path: "/:pathMatch(.*)*",
