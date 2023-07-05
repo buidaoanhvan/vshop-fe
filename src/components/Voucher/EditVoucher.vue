@@ -39,14 +39,14 @@
             >Thương hiệu cung cấp:</a-typography-text
           >
           <a-select
-            v-model:value="brandId"
+            v-model:value="shopId"
             show-search
             placeholder="Chọn thương hiệu"
             style="width: 100%; margin-bottom: 15px"
-            :options="listBrand"
-            :filter-option="filterBrand"
+            :options="listShop"
+            :filter-option="filterShop"
             :fieldNames="{ label: 'name', value: 'id' }"
-            @change="handleChangeBrand"
+            @change="handleChangeShop"
           ></a-select>
         </div>
         <!-- Ngày bắt đầu: -->
@@ -115,24 +115,24 @@
   </a-modal>
 </template>
 <script>
-import { brandStore, supplierStore, voucherStore } from "@/store";
+import { shopStore, supplierStore, voucherStore } from "@/store";
 import { storeToRefs } from "pinia";
 
 export default {
   setup() {
-    const brandS = brandStore();
+    const shopS = shopStore();
     const supplierS = supplierStore();
     const voucherS = voucherStore();
-    const { listBrand } = storeToRefs(brandS);
+    const { listShop } = storeToRefs(shopS);
     const { listSupplier } = storeToRefs(supplierS);
-    return { brandS, supplierS, listBrand, listSupplier, voucherS };
+    return { shopS, supplierS, listShop, listSupplier, voucherS };
   },
   props: ["voucher"],
   data() {
     return {
       visible: false,
       supplierId: "",
-      brandId: "",
+      shopId: "",
       title: "",
       description: "",
       discount_value: "",
@@ -161,9 +161,9 @@ export default {
   methods: {
     showModal() {
       this.visible = true;
-      this.brandS.getBrandAll();
+      this.shopS.getShopAll();
       this.supplierS.getSupplierAll();
-      this.brandId = this.voucher.brand_id;
+      this.shopId = this.voucher.shop_id;
       this.supplierId = this.voucher.supplier_id;
       this.title = this.voucher.title.toString();
       this.description = this.voucher.description.toString();
@@ -179,7 +179,7 @@ export default {
       return option.name.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     },
 
-    filterBrand(input, option) {
+    filterShop(input, option) {
       return option.name.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     },
 
@@ -204,7 +204,7 @@ export default {
     },
 
     handleOk() {
-      // <!-- id	brandId	supplierId	title	description	image	status	discount_value	discount_type	max_discount	start_time	end_time -->
+      // <!-- id	shopId	supplierId	title	description	image	status	discount_value	discount_type	max_discount	start_time	end_time -->
       if (
         this.title &&
         this.description &&
@@ -216,7 +216,7 @@ export default {
       ) {
         this.voucherS.updateVoucher(
           this.voucher.id,
-          this.brandId,
+          this.shopId,
           this.supplierId,
           this.title,
           this.description,
@@ -227,7 +227,7 @@ export default {
           this.start_time,
           this.end_time
         );
-        this.brandId = "";
+        this.shopId = "";
         this.supplierId = "";
         this.title = "";
         this.description = "";

@@ -5,7 +5,7 @@
   <a-modal
     v-model:visible="visible"
     width="500px"
-    title="Thêm thương hiệu"
+    title="Thêm Cửa Hàng"
     cancelText="Hủy"
     okText="Thêm"
     :maskClosable="false"
@@ -13,7 +13,32 @@
   >
     <a-input
       v-model:value="name"
-      placeholder="Tên thương hiệu"
+      placeholder="Email"
+      style="margin-bottom: 15px"
+    />
+    <a-input
+      v-model:value="name"
+      placeholder="Mật Khẩu"
+      style="margin-bottom: 15px"
+    />
+    <a-input
+      v-model:value="name"
+      placeholder="Họ Tên"
+      style="margin-bottom: 15px"
+    />
+    <a-input
+      v-model:value="name"
+      placeholder="SDT"
+      style="margin-bottom: 15px"
+    />
+    <a-input
+      v-model:value="name"
+      placeholder="Tên Cửa Hàng"
+      style="margin-bottom: 15px"
+    />
+    <a-input
+      v-model:value="name"
+      placeholder="Địa Chỉ Cửa Hàng"
       style="margin-bottom: 15px"
     />
     <a-upload
@@ -25,7 +50,7 @@
     >
       <a-button>
         <upload-outlined></upload-outlined>
-        Tải ảnh thương hiệu
+        Tải ảnh Cửa Hàng
       </a-button>
     </a-upload>
   </a-modal>
@@ -33,7 +58,7 @@
 <script>
 import { UploadOutlined } from "@ant-design/icons-vue";
 import { authStore } from "../../store/index";
-import { brandStore } from "../../store/index";
+import { shopStore } from "../../store/index";
 import api_link from "@/configs/api";
 
 export default {
@@ -42,8 +67,8 @@ export default {
   },
   setup() {
     const auth = authStore();
-    const brand = brandStore();
-    return { auth, brand };
+    const shop = shopStore();
+    return { auth, shop };
   },
   data() {
     return {
@@ -66,13 +91,13 @@ export default {
         this.fileList.forEach((element) => {
           this.imgUrl = element.response.url;
         });
-        this.brand.addBrand(this.name, this.imgUrl);
+        this.shop.addShop(this.name, this.imgUrl);
         this.name = "";
         this.fileList = [];
         this.imgUrl = "";
         this.visible = false;
       } else {
-        this.$message.error("Vui lòng nhập tên thương hiệu và hình ảnh");
+        this.$message.error("Vui lòng nhập tên Cửa Hàng và hình ảnh");
       }
     },
   },

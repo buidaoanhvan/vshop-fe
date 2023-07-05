@@ -14,10 +14,11 @@ export const authStore = defineStore({
     async login(email, password) {
       try {
         const res = await Axios.post(api_link.login, { email, password });
-        if (res.data.code == 200) {
-          res.data.user.token = res.data.accessToken;
-          this.user = res.data.user;
-          localStorage.setItem("user", JSON.stringify(res.data.user));
+        if (res.data.code == "00") {
+          console.log(res.data.data);
+          res.data.data.token = res.data.token.accessToken;
+          this.user = res.data.data;
+          localStorage.setItem("user", JSON.stringify(res.data.data));
           router.push("/");
         } else {
           message.warning(res.data.message);

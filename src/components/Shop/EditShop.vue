@@ -3,7 +3,7 @@
   <a-modal
     v-model:visible="visible"
     width="500px"
-    :title="`Chỉnh sửa thương hiệu ${brand.name}`"
+    :title="`Chỉnh sửa Cửa Hàng ${shop.name}`"
     cancelText="Hủy"
     okText="Cập nhật"
     :maskClosable="false"
@@ -11,7 +11,7 @@
   >
     <a-input
       v-model:value="name"
-      placeholder="Tên thương hiệu"
+      placeholder="Tên Cửa Hàng"
       style="margin-bottom: 15px"
     />
     <a-upload
@@ -23,7 +23,7 @@
     >
       <a-button>
         <upload-outlined></upload-outlined>
-        Thay ảnh thương hiệu
+        Thay ảnh Cửa Hàng
       </a-button>
     </a-upload>
   </a-modal>
@@ -31,18 +31,18 @@
 <script>
 import { UploadOutlined } from "@ant-design/icons-vue";
 import { authStore } from "../../store/index";
-import { brandStore } from "../../store/index";
+import { shopStore } from "../../store/index";
 import api_link from "@/configs/api";
 
 export default {
   components: {
     UploadOutlined,
   },
-  props: ["brand"],
+  props: ["shop"],
   setup() {
     const auth = authStore();
-    const brandS = brandStore();
-    return { auth, brandS };
+    const shopS = shopStore();
+    return { auth, shopS };
   },
   data() {
     return {
@@ -60,14 +60,14 @@ export default {
   methods: {
     showModal() {
       this.visible = true;
-      this.name = this.brand.name;
-      this.imgUrl = this.brand.logo;
+      this.name = this.shop.name;
+      this.imgUrl = this.shop.logo;
     },
     handleOk() {
       this.fileList.forEach((element) => {
         this.imgUrl = element.response.url;
       });
-      this.brandS.updateBrand(this.brand.id, this.name, this.imgUrl);
+      this.shopS.updateShop(this.shop.id, this.name, this.imgUrl);
       this.name = "";
       this.imgUrl = "";
       this.fileList = [];

@@ -1,18 +1,31 @@
 <template>
   <a-layout-content class="content">
-    <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
-      tong quan
+    <div
+      :style="{
+        fontSize: '20px',
+        padding: '24px',
+        background: '#fff',
+        minHeight: '360px',
+      }"
+    >
+      Quét Mã QR
+      <template>
+        <QrCode></QrCode>
+      </template>
     </div>
   </a-layout-content>
 </template>
 <script>
+import QrCode from "../components/QRCode/QrCode.vue";
+
 export default {
+  components: { QrCode },
+
   data() {
     return {
       user: null,
     };
   },
-  created() {},
 };
 </script>
 <style>

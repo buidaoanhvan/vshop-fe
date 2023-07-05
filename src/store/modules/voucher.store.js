@@ -24,7 +24,7 @@ export const voucherStore = defineStore({
     },
 
     async addVoucher(
-      brandId,
+      shopId,
       supplierId,
       title,
       description,
@@ -37,7 +37,7 @@ export const voucherStore = defineStore({
     ) {
       try {
         const res = await Axios.post(api_link.voucher, {
-          brandId,
+          shopId,
           supplierId,
           title,
           description,
@@ -67,7 +67,7 @@ export const voucherStore = defineStore({
 
     async updateVoucher(
       id,
-      brandId,
+      shopId,
       supplierId,
       title,
       description,
@@ -80,7 +80,7 @@ export const voucherStore = defineStore({
     ) {
       try {
         const res = await Axios.patch(api_link.voucher + "/" + id, {
-          brandId,
+          shopId,
           supplierId,
           title,
           description,
