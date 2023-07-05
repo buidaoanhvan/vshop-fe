@@ -46,7 +46,12 @@
             <template v-if="column.key === 'end_time'">
               {{ dateTime(record.end_time) }}
             </template>
-            <template v-else-if="column.key === 'action'">
+            <template v-if="column.key === 'action'">
+              <a-button>
+                <EditVoucher :voucher="record"></EditVoucher>
+              </a-button>
+            </template>
+            <!-- <template v-else-if="column.key === 'action'">
               <a-dropdown-button>
                 <template #overlay>
                   <a-menu>
@@ -65,7 +70,7 @@
                 </template>
                 <template #icon><DownOutlined /></template>
               </a-dropdown-button>
-            </template>
+            </template> -->
           </template>
         </a-table>
       </div>
@@ -75,13 +80,14 @@
 <script>
 import AddVoucher from "../components/Voucher/AddVoucher.vue";
 import EditVoucher from "../components/Voucher/EditVoucher.vue";
-import AddCodeVoucher from "@/components/Voucher/AddCodeVoucher.vue";
+// import AddCodeVoucher from "@/components/Voucher/AddCodeVoucher.vue";
 import { storeToRefs } from "pinia";
 import { voucherStore } from "@/store";
-import { DownOutlined } from "@ant-design/icons-vue";
+// import { DownOutlined } from "@ant-design/icons-vue";
 
 export default {
-  components: { AddVoucher, EditVoucher, AddCodeVoucher, DownOutlined },
+  // components: { AddVoucher, EditVoucher, AddCodeVoucher, DownOutlined },
+  components: { AddVoucher, EditVoucher },
   setup() {
     const voucherS = voucherStore();
     const { listVoucher } = storeToRefs(voucherS);
@@ -135,7 +141,8 @@ export default {
   },
   created() {
     this.voucherS.getVoucherAll();
-    console.log("listVoucher:", this.listVoucher.value);
+    // console.log(data);
+    // console.log("listVoucher:", this.listVoucher.value);
   },
 
   methods: {
