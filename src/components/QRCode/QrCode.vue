@@ -26,7 +26,7 @@ export default {
       result: null,
       showScanConfirmation: false,
       showPermissionPopup: true,
-      boxSize: "50vh", // Adjust box size as needed
+      boxSize: "50vh", // Adjust box size as needed as
     };
   },
 
