@@ -12,34 +12,49 @@
     @ok="handleOk"
   >
     <a-input
-      v-model:value="name"
+      v-model:value="email"
       placeholder="Email"
       style="margin-bottom: 15px"
+      required
     />
     <a-input
-      v-model:value="name"
+      v-model:value="password"
       placeholder="Mật Khẩu"
       style="margin-bottom: 15px"
-    />
+      :type="showPassword ? 'text' : 'password'"
+      required
+    >
+      <template #suffix>
+        <a-icon
+          :type="showPassword ? 'eye-invisible' : 'eye'"
+          @click="togglePasswordVisibility"
+          style="cursor: pointer"
+        />
+      </template>
+    </a-input>
     <a-input
-      v-model:value="name"
+      v-model:value="fullname"
       placeholder="Họ Tên"
       style="margin-bottom: 15px"
+      required
     />
     <a-input
-      v-model:value="name"
+      v-model:value="phone"
       placeholder="SDT"
       style="margin-bottom: 15px"
+      required
     />
     <a-input
-      v-model:value="name"
+      v-model:value="shop_name"
       placeholder="Tên Cửa Hàng"
       style="margin-bottom: 15px"
+      required
     />
     <a-input
-      v-model:value="name"
+      v-model:value="shop_address"
       placeholder="Địa Chỉ Cửa Hàng"
       style="margin-bottom: 15px"
+      required
     />
     <a-upload
       v-model:file-list="fileList"
@@ -47,6 +62,7 @@
       :max-count="1"
       :action="url_upload"
       :headers="headers"
+      required
     >
       <a-button>
         <upload-outlined></upload-outlined>
@@ -60,6 +76,7 @@ import { UploadOutlined } from "@ant-design/icons-vue";
 import { authStore } from "../../store/index";
 import { shopStore } from "../../store/index";
 import api_link from "@/configs/api";
+import { ref } from "vue";
 
 export default {
   components: {
@@ -68,12 +85,23 @@ export default {
   setup() {
     const auth = authStore();
     const shop = shopStore();
-    return { auth, shop };
+    const showPassword = ref(false);
+
+    const togglePasswordVisibility = () => {
+      showPassword.value = !showPassword.value;
+    };
+
+    return { auth, shop, showPassword, togglePasswordVisibility };
   },
   data() {
     return {
       visible: false,
-      name: "",
+      email: "",
+      password: "",
+      fullname: "",
+      phone: "",
+      shop_name: "",
+      shop_address: "",
       fileList: [],
       imgUrl: "",
       headers: {
@@ -87,12 +115,21 @@ export default {
       this.visible = true;
     },
     handleOk() {
-      if (this.name && this.fileList.length > 0) {
+      if (this.shop_name && this.fileList.length > 0) {
         this.fileList.forEach((element) => {
           this.imgUrl = element.response.url;
         });
-        this.shop.addShop(this.name, this.imgUrl);
-        this.name = "";
+        console.log(this.shop_address);
+        this.shop.addShop(
+          this.email,
+          this.password,
+          this.fullname,
+          this.phone,
+          this.shop_name,
+          this.imgUrl,
+          this.shop_address
+        );
+        this.shop_name = "";
         this.fileList = [];
         this.imgUrl = "";
         this.visible = false;

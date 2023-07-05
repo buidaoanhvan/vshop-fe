@@ -13,19 +13,37 @@ export const shopStore = defineStore({
     async getShopAll() {
       try {
         const res = await Axios.get(api_link.shop);
-        if (res.data.statusCode == 200) {
+        // console.log(res.data);
+        if (res.data.code == "00") {
           this.listShop = res.data.data;
         } else {
           // console.log(res.data.message);
         }
       } catch (error) {
-        // console.log(error);
+        console.log(error);
       }
     },
 
-    async addShop(name, logo) {
+    async addShop(
+      email,
+      password,
+      fullname,
+      phone,
+      shop_name,
+      shop_logo,
+      shop_address
+    ) {
       try {
-        const res = await Axios.post(api_link.shop, { name, logo });
+        console.log(shop_address);
+        const res = await Axios.post(api_link.shop, {
+          email,
+          password,
+          fullname,
+          phone,
+          shop_name,
+          shop_logo,
+          shop_address,
+        });
         if (res.data.statusCode == 200) {
           this.getShopAll();
           message.success("Thêm Cửa Hàng Thành công");
@@ -68,7 +86,7 @@ export const shopStore = defineStore({
 
     async deleteShop(id) {
       try {
-        const res = await Axios.delete(api_link.shop + "/" + id);
+        const res = await Axios.delete(api_link.shop_delete + "/" + id);
         if (res.data.statusCode == 200) {
           this.getShopAll();
           message.success("Xóa thành công");

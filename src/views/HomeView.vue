@@ -2,19 +2,18 @@
   <a-layout-content class="content">
     <div
       :style="{
+        position: 'relative',
         fontSize: '20px',
         padding: '24px',
         background: '#fff',
         minHeight: '360px',
       }"
     >
-      Quét Mã QR
-      <template>
-        <QrCode></QrCode>
-      </template>
+      <QrCode ref="qrCode"></QrCode>
     </div>
   </a-layout-content>
 </template>
+
 <script>
 import QrCode from "../components/QRCode/QrCode.vue";
 
@@ -26,8 +25,14 @@ export default {
       user: null,
     };
   },
+  methods: {
+    requestCameraPermission() {
+      this.$refs.qrCode.requestCameraPermission();
+    },
+  },
 };
 </script>
+
 <style>
 .logo {
   height: 32px;

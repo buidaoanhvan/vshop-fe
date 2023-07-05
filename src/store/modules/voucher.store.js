@@ -13,7 +13,8 @@ export const voucherStore = defineStore({
     async getVoucherAll() {
       try {
         const res = await Axios.get(api_link.voucher);
-        if (res.data.statusCode == 200) {
+        // console.log(res.data);
+        if (res.data.statusCode == "00") {
           this.listVoucher = res.data.data;
         } else {
           // console.log(res.data.message);
@@ -24,8 +25,7 @@ export const voucherStore = defineStore({
     },
 
     async addVoucher(
-      shopId,
-      supplierId,
+      shop_id,
       title,
       description,
       image,
@@ -36,9 +36,8 @@ export const voucherStore = defineStore({
       end_time
     ) {
       try {
-        const res = await Axios.post(api_link.voucher, {
-          shopId,
-          supplierId,
+        const res = await Axios.post(api_link.voucher_create, {
+          shop_id,
           title,
           description,
           image,
@@ -48,6 +47,7 @@ export const voucherStore = defineStore({
           start_time,
           end_time,
         });
+        console.log(res);
         if (res.data.statusCode == 200) {
           this.getVoucherAll();
           message.success("Thành công");
@@ -67,8 +67,7 @@ export const voucherStore = defineStore({
 
     async updateVoucher(
       id,
-      shopId,
-      supplierId,
+      shop_id,
       title,
       description,
       image,
@@ -80,8 +79,7 @@ export const voucherStore = defineStore({
     ) {
       try {
         const res = await Axios.patch(api_link.voucher + "/" + id, {
-          shopId,
-          supplierId,
+          shop_id,
           title,
           description,
           image,

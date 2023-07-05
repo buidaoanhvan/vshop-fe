@@ -135,6 +135,7 @@ export default {
   },
   created() {
     this.voucherS.getVoucherAll();
+    console.log("listVoucher:", this.listVoucher.value);
   },
 
   methods: {

@@ -14,6 +14,7 @@ export const authStore = defineStore({
     async login(email, password) {
       try {
         const res = await Axios.post(api_link.login, { email, password });
+
         if (res.data.code == "00") {
           console.log(res.data.data);
           res.data.data.token = res.data.token.accessToken;
@@ -24,7 +25,7 @@ export const authStore = defineStore({
           message.warning(res.data.message);
         }
       } catch (error) {
-        message.error("Vui lòng thử lại sau");
+        message.error("Vui lòng thử lại sau" + error);
       }
     },
     logout() {
