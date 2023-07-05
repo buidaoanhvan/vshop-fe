@@ -6,7 +6,7 @@
         fontSize: '20px',
         padding: '24px',
         background: '#fff',
-        minHeight: '360px',
+        minHeight: '700px',
       }"
     >
       <QrCode ref="qrCode"></QrCode>

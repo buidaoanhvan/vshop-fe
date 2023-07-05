@@ -14,6 +14,11 @@
       placeholder="Tên Cửa Hàng"
       style="margin-bottom: 15px"
     />
+    <a-input
+      v-model:value="address"
+      placeholder="Địa Chỉ Cửa Hàng"
+      style="margin-bottom: 15px"
+    />
     <a-upload
       v-model:file-list="fileList"
       list-type="picture"
@@ -48,6 +53,7 @@ export default {
     return {
       visible: false,
       name: "",
+      address: "",
       fileList: [],
       imgUrl: "",
       headers: {
@@ -61,16 +67,18 @@ export default {
     showModal() {
       this.visible = true;
       this.name = this.shop.name;
+      this.address = this.shop.address;
       this.imgUrl = this.shop.logo;
     },
     handleOk() {
       this.fileList.forEach((element) => {
         this.imgUrl = element.response.url;
       });
-      this.shopS.updateShop(this.shop.id, this.name, this.imgUrl);
+      this.shopS.updateShop(this.shop.id, this.name, this.address, this.imgUrl);
       this.name = "";
-      this.imgUrl = "";
+      this.address = "";
       this.fileList = [];
+      this.imgUrl = "";
       this.visible = false;
     },
   },

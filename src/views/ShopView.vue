@@ -19,6 +19,14 @@
           overflow: 'auto',
         }"
       >
+        <div>
+          <a-input-search
+            v-model:value="value"
+            placeholder="Tìm Kiếm Cửa Hàng"
+            enter-button
+            @search="onSearch"
+          />
+        </div>
         <a-list
           :grid="{ gutter: 20 }"
           :data-source="listShop"
@@ -127,6 +135,9 @@ export default {
 
   created() {
     this.shop.getShopAll();
+  },
+  updated() {
+    this.shop.updateShop();
   },
 
   methods: {
