@@ -106,6 +106,29 @@ export const voucherStore = defineStore({
       }
     },
 
+    async createCodeVoucher(voucher_id, number) {
+      try {
+        const res = await Axios.post(api_link.codevoucher_create, {
+          voucher_id,
+          number,
+        });
+        if (res.data.code == "00") {
+          this.getVoucherAll();
+          message.success("Cập nhật thành công");
+        } else {
+          message.warning("Vui lòng kiểm tra lại");
+        }
+      } catch (error) {
+        if (error.response.status === 400) {
+          error.response.data.message.forEach((element) => {
+            message.error(element);
+          });
+        } else {
+          message.error("Vui lòng thử lại sau");
+        }
+      }
+    },
+
     async deleteVoucher(id) {
       try {
         const res = await Axios.delete(api_link.voucher + "/" + id);

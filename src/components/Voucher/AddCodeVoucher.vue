@@ -1,5 +1,5 @@
 <template>
-  <a @click="showModal">Nhập</a>
+  <a @click="showModal">Tạo QRCode</a>
   <a-modal
     v-model:visible="visible"
     width="500px"
@@ -7,9 +7,9 @@
     cancelText="Hủy"
     okText="Nhập"
     :maskClosable="false"
-    @ok="handleUpload"
+    @ok="handleOk"
   >
-    <a-upload
+    <!-- <a-upload
       :file-list="fileList"
       :before-upload="beforeUpload"
       @remove="handleRemove"
@@ -18,14 +18,20 @@
         <upload-outlined></upload-outlined>
         Chọn File Upload
       </a-button>
-    </a-upload>
+    </a-upload> -->
+    <a-input
+      v-model:value="number"
+      placeholder="Nhập số lượng QRCode muốn tạo"
+      style="margin-bottom: 15px"
+      required
+    />
   </a-modal>
 </template>
 <script>
 import { voucherStore } from "@/store";
-import { UploadOutlined } from "@ant-design/icons-vue";
-import axios from "axios";
-import api_link from "@/configs/api";
+// import { UploadOutlined } from "@ant-design/icons-vue";
+// import axios from "axios";
+// import api_link from "@/configs/api";
 
 export default {
   setup() {
@@ -34,16 +40,16 @@ export default {
   },
   props: ["voucher"],
 
-  components: {
-    UploadOutlined,
-  },
+  // components: {
+  //   UploadOutlined,
+  // },
 
   data() {
     return {
       visible: false,
-      uploading: false,
-      voucherId: null,
-      fileList: [],
+      // uploading: false,
+      voucherId: this.voucher.id,
+      number: "",
     };
   },
 
@@ -52,36 +58,48 @@ export default {
       this.visible = true;
       this.voucherId = this.voucher.id;
     },
-    beforeUpload(file) {
-      this.fileList = [file];
-      return false;
-    },
-
-    handleRemove(file) {
-      const index = this.fileList.indexOf(file);
-      const newFileList = this.fileList.slice();
-      newFileList.splice(index, 1);
-      this.fileList = newFileList;
-    },
-
-    handleUpload() {
-      if (this.fileList.length == 1 && this.voucherId) {
+    handleOk() {
+      if (this.number > 0) {
+        console.log(this.voucherId);
+        console.log(this.number);
+        this.voucherS.createCodeVoucher(this.voucherId, this.number);
+        this.voucherId;
+        this.number = "";
         this.visible = false;
-        const formData = new FormData();
-        formData.append("file", this.fileList[0]);
-        axios
-          .post(api_link.codex + "/import/" + this.voucherId, formData)
-          .then((res) => {
-            if (res.data.statusCode == 200) {
-              this.$message.success(res.data.message);
-            } else {
-              this.$message.warning("Vui lòng thử lại sau!");
-            }
-          });
       } else {
-        this.$message.warning("Vui lòng kiểm tra lại dữ liệu");
+        this.$message.error("Vui lòng nhập số lượng QRCode bạn muốn thêm");
       }
     },
+    // beforeUpload(file) {
+    //   this.fileList = [file];
+    //   return false;
+    // },
+
+    // handleRemove(file) {
+    //   const index = this.fileList.indexOf(file);
+    //   const newFileList = this.fileList.slice();
+    //   newFileList.splice(index, 1);
+    //   this.fileList = newFileList;
+    // },
+
+    // handleUpload() {
+    //   if (this.fileList.length == 1 && this.voucherId) {
+    //     this.visible = false;
+    //     const formData = new FormData();
+    //     formData.append("file", this.fileList[0]);
+    //     axios
+    //       .post(api_link.number + "/import/" + this.voucherId, formData)
+    //       .then((res) => {
+    //         if (res.data.statusCode == 200) {
+    //           this.$message.success(res.data.message);
+    //         } else {
+    //           this.$message.warning("Vui lòng thử lại sau!");
+    //         }
+    //       });
+    //   } else {
+    //     this.$message.warning("Vui lòng kiểm tra lại dữ liệu");
+    //   }
+    // },
   },
 };
 </script>
