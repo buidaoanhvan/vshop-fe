@@ -19,7 +19,7 @@
           overflow: 'auto',
         }"
       >
-        <!-- <a-list
+        <a-list
           :grid="{ gutter: 20 }"
           :data-source="listShop"
           style="overflow-x: hidden"
@@ -48,8 +48,8 @@
               </a-card>
             </a-list-item>
           </template>
-        </a-list> -->
-        <a-table
+        </a-list>
+        <!-- <a-table
           :columns="columns"
           :data-source="listSupplier"
           :pagination="false"
@@ -66,7 +66,7 @@
               </span>
             </template>
           </template>
-        </a-table>
+        </a-table> -->
       </div>
     </div>
   </a-layout-content>

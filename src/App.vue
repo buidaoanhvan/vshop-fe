@@ -109,12 +109,12 @@ export default {
           title: "Voucher",
           icon: "BarcodeOutlined",
         },
-        {
-          routerName: "doitac",
-          key: "doitac",
-          title: "Đối tác",
-          icon: "BankOutlined",
-        },
+        // {
+        //   routerName: "doitac",
+        //   key: "doitac",
+        //   title: "Đối tác",
+        //   icon: "BankOutlined",
+        // },
         {
           routerName: "layvoucher",
           key: "layvoucher",

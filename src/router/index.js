@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LoginView from "@/views/LoginView.vue";
 import HomeViewVue from "@/views/HomeView.vue";
+import QrView from "../views/QrView.vue";
 import UserViewVue from "../views/UserView.vue";
 import ShopView from "@/views/ShopView.vue";
 import SupplierView from "@/views/SupplierView.vue";
@@ -20,6 +21,12 @@ const routes = [
     path: "/",
     name: "tongquan",
     component: HomeViewVue,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/qr",
+    name: "qr",
+    component: QrView,
     meta: { requiresAuth: true },
   },
   {

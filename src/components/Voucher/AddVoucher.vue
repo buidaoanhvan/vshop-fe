@@ -34,7 +34,7 @@
             >Cửa Hàng cung cấp:</a-typography-text
           >
           <a-select
-            v-model:value="shopId"
+            v-model:value="shop_id"
             show-search
             placeholder="Chọn Cửa Hàng"
             style="width: 100%; margin-bottom: 15px"
@@ -45,14 +45,14 @@
           ></a-select>
         </div>
         <!-- Ngày bắt đầu: -->
-        <a-typography-text type="secondary">Ngày bắt đầu:</a-typography-text>
+        <!-- <a-typography-text type="secondary">Ngày bắt đầu:</a-typography-text>
         <a-date-picker
           show-time
           v-model:value="start_time"
           placeholder="Ngày bắt đầu"
           style="width: 100%; margin-bottom: 15px"
           @change="onChangeStart"
-        />
+        /> -->
         <!-- Hình ảnh: -->
         <a-upload
           v-model:file-list="fileList"
@@ -96,7 +96,7 @@
           style="margin-bottom: 15px"
         />
         <!-- Đối tác: -->
-        <div class="select-box">
+        <!-- <div class="select-box">
           <a-typography-text type="secondary">Đối tác:</a-typography-text>
           <a-select
             v-model:value="supplierId"
@@ -108,16 +108,16 @@
             :fieldNames="{ label: 'name', value: 'id' }"
             @change="handleChangeSupplier"
           ></a-select>
-        </div>
+        </div> -->
         <!-- Ngày kết thúc: -->
-        <a-typography-text type="secondary">Ngày kết thúc:</a-typography-text>
+        <!-- <a-typography-text type="secondary">Ngày kết thúc:</a-typography-text>
         <a-date-picker
           show-time
           v-model:value="end_time"
           placeholder="Ngày kết thúc"
           style="width: 100%; margin-bottom: 15px"
           @change="onChangeEnd"
-        />
+        /> -->
       </a-col>
     </a-row>
   </a-modal>
@@ -144,16 +144,15 @@ export default {
   data() {
     return {
       visible: false,
-      supplierId: "",
-      shopId: "",
+      shop_id: "",
       title: "",
       description: "",
       discount_value: "",
       discount_type: "",
       max_discount: "",
       image: "",
-      start_time: "",
-      end_time: "",
+      // start_time: "",
+      // end_time: "",
       fileList: [],
       options_discount_type: [
         {
@@ -191,25 +190,21 @@ export default {
       return option.name.toLowerCase().indexOf(input.toLowerCase()) >= 0;
     },
 
-    handleChangeSupplier(value) {
-      this.supplierId = value;
-    },
-
     handleChangeDiscountType(value) {
       this.discount_type = value;
     },
 
     handleChangeShop(value) {
-      this.shopId = value;
+      this.shop_id = value;
     },
 
-    onChangeStart(date) {
-      this.start_time = date;
-    },
+    // onChangeStart(date) {
+    //   this.start_time = date;
+    // },
 
-    onChangeEnd(date) {
-      this.end_time = date;
-    },
+    // onChangeEnd(date) {
+    //   this.end_time = date;
+    // },
 
     handleOk() {
       // <!-- id shopId	supplierId	title	description	image	status	discount_value	discount_type	max_discount	start_time	end_time -->
@@ -219,35 +214,33 @@ export default {
         this.discount_value &&
         this.discount_type &&
         this.max_discount &&
-        this.start_time &&
-        this.end_time &&
+        // this.start_time &&
+        // this.end_time &&
         this.fileList.length > 0
       ) {
         this.fileList.forEach((element) => {
           this.image = element.response.url;
         });
         this.voucherS.addVoucher(
-          this.shopId,
-          this.supplierId,
+          this.shop_id,
           this.title,
           this.description,
           this.image,
           parseInt(this.discount_value),
           parseInt(this.discount_type),
-          parseInt(this.max_discount),
-          this.start_time,
-          this.end_time
+          parseInt(this.max_discount)
+          // this.start_time,
+          // this.end_time
         );
-        this.shopId = "";
-        this.supplierId = "";
+        this.shop_id = "";
         this.title = "";
         this.description = "";
         this.image = "";
         this.discount_value = "";
         this.discount_type = "";
         this.max_discount = "";
-        this.start_time = "";
-        this.end_time = "";
+        // this.start_time = "";
+        // this.end_time = "";
         this.fileList = [];
         this.visible = false;
       } else {
