@@ -41,9 +41,6 @@
                 <a-card-meta :title="item.name"> </a-card-meta>
                 <template #actions>
                   <EditShop :shop="item"></EditShop>
-                  <a key="list-loadmore-more" @click="deleteShop(item.id)"
-                    >Xóa</a
-                  >
                 </template>
               </a-card>
             </a-list-item>

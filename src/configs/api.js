@@ -6,7 +6,7 @@ const api_link = {
   user: url + "/auth/user",
   alluser: url + "/auth/alluser",
   shop: url + "/v1/api/shop",
-  shop_delete: url + "/v1/api/shop/delete",
+  shop_update: url + "/v1/api/shop/update",
   // supplier: url + "/v1/api/supplier",
   voucher: url + "/v1/api/voucher",
   voucher_create: url + "/v1/api/voucher/create",

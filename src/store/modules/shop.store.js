@@ -44,7 +44,7 @@ export const shopStore = defineStore({
           shop_logo,
           shop_address,
         });
-        if (res.data.statusCode == 200) {
+        if (res.data.code == "00") {
           this.getShopAll();
           message.success("Thêm Cửa Hàng Thành công");
         } else {
@@ -63,7 +63,7 @@ export const shopStore = defineStore({
 
     async updateShop(id, name, logo) {
       try {
-        const res = await Axios.patch(api_link.shop + "/" + id, {
+        const res = await Axios.patch(api_link.shop_update + "/" + id, {
           name,
           logo,
         });
