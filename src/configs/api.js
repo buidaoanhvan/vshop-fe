@@ -14,6 +14,7 @@ const api_link = {
   voucher_update: url + "/v1/api/voucher/update",
   codevoucher_create: url + "/v1/api/code/create",
   codevoucher_view: url + "/v1/api/code/view",
+  codevoucher_detail: url + "/v1/api/code/detail",
   // codex: url + "/v1/api/codex",
   segment: url + "/v1/api/segment",
   roles: url + "/roles",
