@@ -8,6 +8,7 @@ export const voucherStore = defineStore({
   state: () => ({
     listVoucher: [],
     listCode: [],
+    codeDetail: {},
   }),
 
   actions: {
@@ -138,6 +139,24 @@ export const voucherStore = defineStore({
         // console.log(res.data);
         if (res.data.code == "00") {
           this.listCode = [...this.listCode, ...res.data.data];
+        } else {
+          // console.log(res.data.message);
+        }
+      } catch (error) {
+        // console.log(error);
+      }
+    },
+
+    async getCodeDetail(codex) {
+      try {
+        const res = await Axios.post(api_link.codevoucher_detail, {
+          codex,
+        });
+        // console.log(res.data);
+        if (res.data.code == "00") {
+          message.success("Thành công");
+          this.codeDetail = res.data.data;
+          return res.data;
         } else {
           // console.log(res.data.message);
         }
