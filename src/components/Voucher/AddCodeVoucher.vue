@@ -3,7 +3,7 @@
   <a-modal
     v-model:visible="visible"
     width="500px"
-    :title="`Nhập file mã voucher ${voucher.title}`"
+    :title="`Nhập số lượng QRCode của Voucher ( ${voucher.title} )`"
     cancelText="Hủy"
     okText="Nhập"
     :maskClosable="false"
@@ -20,7 +20,7 @@
       </a-button>
     </a-upload> -->
     <a-input
-      v-model:value="number"
+      v-model:value="quantity"
       placeholder="Nhập số lượng QRCode muốn tạo"
       style="margin-bottom: 15px"
       required
@@ -49,7 +49,7 @@ export default {
       visible: false,
       // uploading: false,
       voucherId: this.voucher.id,
-      number: "",
+      quantity: "",
     };
   },
 
@@ -59,12 +59,12 @@ export default {
       this.voucherId = this.voucher.id;
     },
     handleOk() {
-      if (this.number > 0) {
-        console.log(this.voucherId);
-        console.log(this.number);
-        this.voucherS.createCodeVoucher(this.voucherId, this.number);
+      if (this.quantity > 0) {
+        // console.log(this.voucherId);
+        // console.log(this.quantity);
+        this.voucherS.createCodeVoucher(this.voucherId, this.quantity);
         this.voucherId;
-        this.number = "";
+        this.quantity = "";
         this.visible = false;
       } else {
         this.$message.error("Vui lòng nhập số lượng QRCode bạn muốn thêm");
@@ -88,7 +88,7 @@ export default {
     //     const formData = new FormData();
     //     formData.append("file", this.fileList[0]);
     //     axios
-    //       .post(api_link.number + "/import/" + this.voucherId, formData)
+    //       .post(api_link.quantity + "/import/" + this.voucherId, formData)
     //       .then((res) => {
     //         if (res.data.statusCode == 200) {
     //           this.$message.success(res.data.message);

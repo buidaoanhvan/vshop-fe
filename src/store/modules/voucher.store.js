@@ -7,6 +7,7 @@ export const voucherStore = defineStore({
   id: "voucher",
   state: () => ({
     listVoucher: [],
+    listCode: [],
   }),
 
   actions: {
@@ -106,17 +107,16 @@ export const voucherStore = defineStore({
       }
     },
 
-    async createCodeVoucher(voucher_id, number) {
+    async createCodeVoucher(voucher_id, quantity) {
       try {
         const res = await Axios.post(api_link.codevoucher_create, {
           voucher_id,
-          number,
+          quantity,
         });
         if (res.data.code == "00") {
-          this.getVoucherAll();
-          message.success("Cập nhật thành công");
+          message.success(res.data.message);
         } else {
-          message.warning("Vui lòng kiểm tra lại");
+          message.warning(res.data.message);
         }
       } catch (error) {
         if (error.response.status === 400) {
@@ -126,6 +126,23 @@ export const voucherStore = defineStore({
         } else {
           message.error("Vui lòng thử lại sau");
         }
+      }
+    },
+
+    async getCodeVoucher(voucher_id, page) {
+      try {
+        const res = await Axios.post(api_link.codevoucher_view, {
+          voucher_id,
+          page,
+        });
+        // console.log(res.data);
+        if (res.data.code == "00") {
+          this.listCode = [...this.listCode, ...res.data.data];
+        } else {
+          // console.log(res.data.message);
+        }
+      } catch (error) {
+        // console.log(error);
       }
     },
 

@@ -21,6 +21,18 @@
             @search="onSearch"
           />
         </div>
+        <div class="select-box">
+          <a-select
+            v-model:value="selectedShopId"
+            show-search
+            placeholder="Chọn Cửa Hàng"
+            style="width: 100%; margin-bottom: 15px"
+            :options="listShop"
+            :filter-option="filterSeachShop"
+            :fieldNames="{ label: 'name', value: 'id' }"
+            @change="handleSeachShop"
+          ></a-select>
+        </div>
       </a-row>
       <div
         :style="{
@@ -32,7 +44,7 @@
         <a-table
           v-if="!isMobile"
           :columns="columns"
-          :data-source="listVoucher"
+          :data-source="filteredVouchers"
           :pagination="false"
         >
           <template #bodyCell="{ column, record }">
@@ -60,6 +72,9 @@
                     </a-menu-item>
                     <a-menu-item key="2">
                       <AddCodeVoucher :voucher="record"></AddCodeVoucher>
+                    </a-menu-item>
+                    <a-menu-item key="3">
+                      <ShowCodeVoucher :voucher="record"></ShowCodeVoucher>
                     </a-menu-item>
                   </a-menu>
                 </template>
@@ -184,6 +199,9 @@
                     <a-menu-item key="2">
                       <AddCodeVoucher :voucher="item"></AddCodeVoucher>
                     </a-menu-item>
+                    <a-menu-item key="3">
+                      <ShowCodeVoucher :voucher="item"></ShowCodeVoucher>
+                    </a-menu-item>
                   </a-menu>
                 </template>
                 <template #icon><DownOutlined /></template>
@@ -200,15 +218,38 @@
 import AddVoucher from "../components/Voucher/AddVoucher.vue";
 import EditVoucher from "../components/Voucher/EditVoucher.vue";
 import AddCodeVoucher from "@/components/Voucher/AddCodeVoucher.vue";
+import ShowCodeVoucher from "@/components/Voucher/ShowCodeVoucher.vue";
 import { storeToRefs } from "pinia";
-import { voucherStore } from "@/store";
+import { voucherStore, shopStore } from "@/store";
 import { DownOutlined } from "@ant-design/icons-vue";
+import { ref, computed } from "vue";
 
 export default {
-  components: { AddVoucher, EditVoucher, AddCodeVoucher, DownOutlined },
+  components: {
+    AddVoucher,
+    EditVoucher,
+    AddCodeVoucher,
+    ShowCodeVoucher,
+    DownOutlined,
+  },
   setup() {
     const voucherS = voucherStore();
     const { listVoucher } = storeToRefs(voucherS);
+    const shopS = shopStore();
+    const { listShop } = storeToRefs(shopS);
+    const selectedShopId = ref(null);
+    const handleSeachShop = (value) => {
+      selectedShopId.value = value;
+    };
+    const filteredVouchers = computed(() => {
+      if (selectedShopId.value) {
+        return listVoucher.value.filter(
+          (voucher) => voucher.shop_id === selectedShopId.value
+        );
+      } else {
+        return listVoucher.value;
+      }
+    });
 
     const isMobile = window.innerWidth <= 768;
 
@@ -216,6 +257,11 @@ export default {
       voucherS,
       listVoucher,
       isMobile,
+      shopS,
+      listShop,
+      selectedShopId,
+      handleSeachShop,
+      filteredVouchers,
     };
   },
   data() {
@@ -290,6 +336,11 @@ export default {
                         record
                       )}"></AddCodeVoucher>
                     </a-menu-item>
+                    <a-menu-item key="3">
+                      <ShowCodeVoucher :voucher="${JSON.stringify(
+                        record
+                      )}"></ShowCodeVoucher>
+                    </a-menu-item>
                   </a-menu>
                 </template>
                 <template #icon><DownOutlined /></template>
@@ -302,6 +353,7 @@ export default {
   },
   created() {
     this.voucherS.getVoucherAll();
+    this.shopS.getShopAll();
   },
   methods: {
     dateTime(value) {
@@ -321,6 +373,12 @@ export default {
     },
     // onSearch(value) {
     //   // Xử lý sự kiện tìm kiếm
+    // },
+    filterSeachShop(input, option) {
+      return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    },
+    // handleChangeShop(value) {
+    //   this.shop_id = value;
     // },
   },
 };
