@@ -21,7 +21,14 @@
             {{ record.codex }}
           </template>
           <template v-if="column.key === 'is_used'">
-            {{ getQRValue(record) }}
+            <span
+              :class="{
+                'red-text': record.is_used === 1,
+                'green-text': record.is_used === 0,
+              }"
+            >
+              {{ getQRValue(record) }}
+            </span>
           </template>
         </template>
       </a-table>
@@ -74,9 +81,9 @@ export default {
     },
     getQRValue(item) {
       if (item.is_used === 0) {
-        return `Chưa dùng`;
+        return "Chưa dùng";
       } else if (item.is_used === 1) {
-        return `Đã dùng`;
+        return "Đã dùng";
       }
     },
   },
@@ -86,5 +93,12 @@ export default {
 <style scoped>
 .box-add-vc {
   padding: 0px 10px;
+}
+.red-text {
+  color: red;
+}
+
+.green-text {
+  color: green;
 }
 </style>
