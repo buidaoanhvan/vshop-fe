@@ -154,7 +154,7 @@ export const voucherStore = defineStore({
         });
         // console.log(res.data);
         if (res.data.code == "00") {
-          message.success("Thành công");
+          message.success("Quét QRCode Thành công");
           this.codeDetail = res.data.data;
           return res.data;
         } else {

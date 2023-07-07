@@ -3,7 +3,12 @@
     <StreamBarcodeReader v-if="camera" @decode="onDecode" @loaded="onLoaded" />
     <a-button type="primary" @click="showCamera">Mở Camera</a-button>
 
-    <a-modal v-model:visible="visible" title="Chi Tiết Voucher">
+    <a-modal
+      v-model:visible="visible"
+      @ok="handleOk"
+      :confirm-loading="confirmLoading"
+      title="Chi Tiết Voucher"
+    >
       <a-image
         alt="example"
         :src="codeDetail.vouchers.image"
@@ -12,26 +17,41 @@
         height="200px"
         :preview="false"
       />
-      <a-typography-title :level="4">{{
-        codeDetail.vouchers.title
-      }}</a-typography-title>
+      <a-typography-title
+        :level="4"
+        style="text-align: center; margin-top: 10px"
+        >{{ codeDetail.vouchers.title }}</a-typography-title
+      >
       <div style="display: flex; justify-content: center">
-        <a-tag color="green" style="font-size: 16px; padding: 10px">
+        <a-tag color="green" style="font-size: 18px; padding: 10px">
           {{ codeDetail.codex }}
           <br />
-          <p style="font-size: 12px; color: red; text-align: center; margin: 0">
+          <p
+            style="font-size: 15px; color: red; text-align: center; margin: 8px"
+          >
             HSD: {{ codeDetail.vouchers.end_time }}
           </p>
         </a-tag>
       </div>
-      <a-tag color="blue"
-        >Giá trị: {{ codeDetail.vouchers.max_discount }} đ</a-tag
+      <div
+        style="
+          max-height: 100px;
+          overflow-y: auto;
+          font-size: 18px;
+          text-align: center;
+        "
       >
-      <div style="max-height: 100px; overflow-y: auto">
         {{ codeDetail.vouchers.description }}
       </div>
       <div>
-        {{ getQRValue(codeDetail.is_used) }}
+        <div style="margin: 15px 0 -8px 0; text-align: right">
+          <a-tag color="orange" style="font-size: 15px">
+            {{ getQRValue(codeDetail.is_used) }}
+          </a-tag>
+          <a-tag color="blue" style="font-size: 15px; margin: 5px"
+            >Giá trị: {{ codeDetail.vouchers.max_discount }} đ</a-tag
+          >
+        </div>
       </div>
     </a-modal>
   </div>
@@ -41,6 +61,7 @@
 import { StreamBarcodeReader } from "vue-barcode-reader";
 import { voucherStore } from "@/store";
 import { storeToRefs } from "pinia";
+import { ref } from "vue";
 
 export default {
   components: {
@@ -50,7 +71,18 @@ export default {
   setup() {
     const code = voucherStore();
     const { codeDetail } = storeToRefs(code);
-    return { code, codeDetail };
+    const confirmLoading = ref(false);
+    const visible = ref(false);
+
+    // Button OK
+    const handleOk = () => {
+      confirmLoading.value = true;
+      setTimeout(() => {
+        visible.value = false;
+        confirmLoading.value = false;
+      }, 2000);
+    };
+    return { code, codeDetail, handleOk };
   },
 
   data() {
@@ -58,6 +90,7 @@ export default {
       result: "",
       visible: false,
       camera: false,
+      // handleOk,
     };
   },
 
