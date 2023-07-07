@@ -70,31 +70,32 @@ export default {
 
   setup() {
     const code = voucherStore();
-    const { codeDetail } = storeToRefs(code);
+    const codeDetail = storeToRefs(code).codeDetail;
     const confirmLoading = ref(false);
     const visible = ref(false);
 
-    // Button OK
-    const handleOk = () => {
-      confirmLoading.value = true;
-      setTimeout(() => {
-        visible.value = false;
-        confirmLoading.value = false;
-      }, 2000);
-    };
-    return { code, codeDetail, handleOk };
+    return { code, codeDetail, confirmLoading, visible };
   },
 
   data() {
     return {
       result: "",
-      visible: false,
       camera: false,
-      // handleOk,
     };
   },
 
   methods: {
+    async handleOk() {
+      this.confirmLoading = true;
+      setTimeout(() => {
+        this.visible = false;
+        this.confirmLoading = false;
+      }, 2000);
+      if (this.codeDetail.is_used === 0) {
+        this.code.updateIsUsed(this.codeDetail.code);
+      }
+    },
+
     async onDecode(result) {
       this.camera = false;
       await this.code.getCodeDetail(result);

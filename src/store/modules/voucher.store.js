@@ -165,6 +165,21 @@ export const voucherStore = defineStore({
       }
     },
 
+    async updateIsUsed() {
+      try {
+        const res = await Axios.post(api_link.codevoucher_used, { is_used: 1 });
+        if (res.data.code == "00") {
+          message.success("Cập nhập trạng thái thành công");
+          this.codeDetail = res.data.data;
+          return res.data;
+        } else {
+          // console.log(res.data.message);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     async deleteVoucher(id) {
       try {
         const res = await Axios.delete(api_link.voucher + "/" + id);
