@@ -87,14 +87,13 @@ export default {
   methods: {
     async handleOk() {
       if (this.codeDetail.is_used === 0) {
-        console.log("test" + this.codeDetail.codex);
-        this.code.updateIsUsed(this.codeDetail.codex);
-        // this.confirmLoading = true;
-        // setTimeout(() => {
-        //   this.visible = false;
-        //   this.confirmLoading = false;
-        // }, 500);
-        this.visible = false;
+        this.confirmLoading = true;
+        setTimeout(() => {
+          this.code.updateIsUsed(this.codeDetail.codex);
+          this.visible = false;
+          this.confirmLoading = false;
+        }, 500);
+        this.$message.success("Thành công");
       }
     },
 
