@@ -86,13 +86,15 @@ export default {
 
   methods: {
     async handleOk() {
-      this.confirmLoading = true;
-      setTimeout(() => {
-        this.visible = false;
-        this.confirmLoading = false;
-      }, 2000);
       if (this.codeDetail.is_used === 0) {
-        this.code.updateIsUsed(this.codeDetail.code);
+        console.log("test" + this.codeDetail.codex);
+        this.code.updateIsUsed(this.codeDetail.codex);
+        // this.confirmLoading = true;
+        // setTimeout(() => {
+        //   this.visible = false;
+        //   this.confirmLoading = false;
+        // }, 500);
+        this.visible = false;
       }
     },
 
