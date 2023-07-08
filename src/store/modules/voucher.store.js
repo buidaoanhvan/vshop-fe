@@ -165,9 +165,9 @@ export const voucherStore = defineStore({
       }
     },
 
-    async updateIsUsed() {
+    async updateIsUsed(codex) {
       try {
-        const res = await Axios.post(api_link.codevoucher_used, { is_used: 1 });
+        const res = await Axios.post(api_link.codevoucher_used, { codex });
         if (res.data.code == "00") {
           message.success("Cập nhập trạng thái thành công");
           this.codeDetail = res.data.data;
