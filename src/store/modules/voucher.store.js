@@ -180,18 +180,18 @@ export const voucherStore = defineStore({
       }
     },
 
-    async deleteVoucher(id) {
-      try {
-        const res = await Axios.delete(api_link.voucher + "/" + id);
-        if (res.data.statusCode == 200) {
-          this.getVoucherAll();
-          message.success("Xóa thành công");
-        } else {
-          message.warning("Vui lòng kiểm tra lại");
-        }
-      } catch (error) {
-        message.error("Vui lòng thử lại sau");
-      }
-    },
+    // async deleteVoucher(id) {
+    //   try {
+    //     const res = await Axios.delete(api_link.voucher + "/" + id);
+    //     if (res.data.statusCode == 200) {
+    //       this.getVoucherAll();
+    //       message.success("Xóa thành công");
+    //     } else {
+    //       message.warning("Vui lòng kiểm tra lại");
+    //     }
+    //   } catch (error) {
+    //     message.error("Vui lòng thử lại sau");
+    //   }
+    // },
   },
 });

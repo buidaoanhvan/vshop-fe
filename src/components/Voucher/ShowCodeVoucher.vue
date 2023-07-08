@@ -11,6 +11,9 @@
         marginTop: '16px',
         overflow: 'auto',
       }"
+      class="box-add-vc"
+      @scroll="handleScroll"
+      ref="container"
     >
       <a-table :columns="columns" :data-source="listCode" :pagination="false">
         <template #bodyCell="{ column, record }">
@@ -35,16 +38,24 @@
     </div>
   </a-modal>
 </template>
+
 <script>
 import { voucherStore } from "@/store";
 import { storeToRefs } from "pinia";
+import { ref, onMounted } from "vue";
 
 export default {
   setup() {
     const code = voucherStore();
     const voucherS = voucherStore();
     const { listCode } = storeToRefs(code);
-    return { code, listCode, voucherS };
+
+    const container = ref(null);
+    onMounted(() => {
+      container.value = document.querySelector(".box-add-vc");
+    });
+
+    return { code, listCode, voucherS, container };
   },
   props: ["voucher"],
 
@@ -70,6 +81,7 @@ export default {
           key: "is_used",
         },
       ],
+      isEndOfPage: false,
     };
   },
 
@@ -78,6 +90,26 @@ export default {
       this.visible = true;
       this.code.getCodeVoucher(this.voucher.id, 1);
       this.listCode = [];
+    },
+    handleScroll() {
+      const scrollPosition =
+        this.$refs.container.scrollTop + this.$refs.container.clientHeight;
+      const maxScroll = this.$refs.container.scrollHeight;
+
+      if (scrollPosition === maxScroll && !this.isEndOfPage) {
+        this.loadNextPageData();
+      }
+    },
+    loadNextPageData() {
+      const nextPage = this.listCode.length / 10 + 1; // Lấy trang tiếp theo
+      this.code
+        .getCodeVoucher(this.voucher.id, nextPage)
+        .then((response) => {
+          this.listCode = [...this.listCode, ...response.data]; // Thêm dữ liệu của trang tiếp theo vào danh sách
+        })
+        .catch((error) => {
+          console.error("Error loading next page data:", error);
+        });
     },
     getQRValue(item) {
       if (item.is_used === 0) {
