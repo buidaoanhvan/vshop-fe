@@ -1,17 +1,33 @@
 <template>
   <div>
-    <StreamBarcodeReader v-if="camera" @decode="onDecode" @loaded="onLoaded" />
+    <StreamBarcodeReader
+      v-if="camera"
+      @decode="onDecode"
+      @loaded="onLoaded"
+      style="max-width: 500px"
+    />
     <a-button type="primary" @click="showCamera">Mở Camera</a-button>
+    <br />
+    <a-auto-complete style="width: 300px" @select="handleSearch">
+      <a-input-search
+        size="large"
+        placeholder="Nhập mã QRCode"
+        enter-button
+        @search="handleSearch"
+      ></a-input-search>
+    </a-auto-complete>
 
     <a-modal
-      v-model:visible="visible"
+      v-model:visible="visibleModaVC"
+      :okText="okText"
+      :cancelText="null"
       @ok="handleOk"
       :confirm-loading="confirmLoading"
       title="Chi Tiết Voucher"
     >
       <a-image
         alt="example"
-        :src="codeDetail.vouchers.image"
+        :src="codeDetail?.vouchers.image"
         style="border: 1px solid #f0f0f0"
         width="100%"
         height="200px"
@@ -39,6 +55,7 @@
           overflow-y: auto;
           font-size: 18px;
           text-align: center;
+          margin: 10px 0px 10px 0px;
         "
       >
         {{ codeDetail.vouchers.description }}
@@ -61,7 +78,6 @@
 import { StreamBarcodeReader } from "vue-barcode-reader";
 import { voucherStore } from "@/store";
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
 
 export default {
   components: {
@@ -70,17 +86,17 @@ export default {
 
   setup() {
     const code = voucherStore();
-    const codeDetail = storeToRefs(code).codeDetail;
-    const confirmLoading = ref(false);
-    const visible = ref(false);
+    const { codeDetail } = storeToRefs(code);
 
-    return { code, codeDetail, confirmLoading, visible };
+    return { code, codeDetail };
   },
 
   data() {
     return {
       result: "",
       camera: false,
+      visibleModaVC: false,
+      okText: "",
     };
   },
 
@@ -88,33 +104,60 @@ export default {
     async handleOk() {
       if (this.codeDetail.is_used === 0) {
         this.confirmLoading = true;
-        setTimeout(() => {
-          this.code.updateIsUsed(this.codeDetail.codex);
-          this.visible = false;
-          this.confirmLoading = false;
-        }, 500);
+        this.code.updateIsUsed(this.codeDetail.codex);
+        this.visibleModaVC = false;
+        this.confirmLoading = false;
         this.$message.success("Thành công");
+      } else {
+        this.confirmLoading = false;
+        this.visibleModaVC = false;
       }
     },
 
     async onDecode(result) {
+      if (!result) {
+        this.$message.error("Vui lòng đưa mã ra trước camera");
+        return;
+      }
       this.camera = false;
-      await this.code.getCodeDetail(result);
-      console.log(this.codeDetail);
-      this.result = result;
-      this.visible = true;
+      await this.code.getCodeDetail(result).then((res) => {
+        if (res.code == "00") {
+          this.$message.success("Quét QRCode Thành công");
+          this.visibleModaVC = true;
+        } else {
+          this.$message.error("Mã QRCode không đúng");
+        }
+      });
+    },
+
+    async handleSearch(result) {
+      if (!result) {
+        this.$message.error("Vui lòng nhập mã");
+        return;
+      }
+      await this.code.getCodeDetail(result).then((res) => {
+        if (res.code == "00") {
+          this.$message.success("Nhập mã thành công");
+          this.visibleModaVC = true;
+        } else {
+          this.$message.error("Mã không đúng");
+        }
+      });
     },
 
     getQRValue(is_used) {
       if (is_used === 0) {
+        this.okText = "Sử dụng voucher";
         return "Chưa dùng";
       } else if (is_used === 1) {
+        this.okText = "Đóng";
         return "Đã dùng";
       }
     },
 
     showCamera() {
       this.camera = true;
+      this.visibleModaVC = false;
     },
   },
 };

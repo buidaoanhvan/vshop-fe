@@ -154,10 +154,10 @@ export const voucherStore = defineStore({
         });
         // console.log(res.data);
         if (res.data.code == "00") {
-          message.success("Quét QRCode Thành công");
           this.codeDetail = res.data.data;
           return res.data;
         } else {
+          return res.data;
           // console.log(res.data.message);
         }
       } catch (error) {
@@ -169,10 +169,12 @@ export const voucherStore = defineStore({
       try {
         const res = await Axios.post(api_link.codevoucher_used, { codex });
         if (res.data.code == "00") {
-          message.success("Cập nhập trạng thái thành công");
-          this.codeDetail = res.data.data;
+          message.success("Sử dụng voucher thành công");
+          // this.codeDetail = res.data.data;
           return res.data;
         } else {
+          message.error("Vui lòng thử lại sau");
+          return res.data;
           // console.log(res.data.message);
         }
       } catch (error) {
