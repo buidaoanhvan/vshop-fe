@@ -18,6 +18,7 @@
           :key="route.key"
           :to="{ name: route.routerName }"
         >
+          <!-- admin -->
           <a-menu-item :key="route.key">
             <component v-bind:is="route.icon"></component>
             <span class="nav-text">{{ route.title }}</span>
@@ -75,6 +76,7 @@ export default {
   setup() {
     const auth = authStore();
     const { user } = storeToRefs(auth);
+
     return { auth, user };
   },
   components: {
@@ -121,18 +123,18 @@ export default {
           title: "Lấy voucher",
           icon: "BranchesOutlined",
         },
-        {
-          routerName: "yeucau",
-          key: "yeucau",
-          title: "Yêu cầu",
-          icon: "PullRequestOutlined",
-        },
-        {
-          routerName: "nguoidung",
-          key: "nguoidung",
-          title: "Người dùng",
-          icon: "TeamOutlined",
-        },
+        // {
+        //   routerName: "yeucau",
+        //   key: "yeucau",
+        //   title: "Yêu cầu",
+        //   icon: "PullRequestOutlined",
+        // },
+        // {
+        //   routerName: "nguoidung",
+        //   key: "nguoidung",
+        //   title: "Người dùng",
+        //   icon: "TeamOutlined",
+        // },
       ],
     };
   },

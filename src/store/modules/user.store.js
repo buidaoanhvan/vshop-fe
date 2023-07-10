@@ -132,5 +132,18 @@ export const userStore = defineStore({
         message.warning("Vui lòng thử lại sau");
       }
     },
+
+    async getRoleHome() {
+      try {
+        const res = await Axios.get(api_link.roles, {});
+        if (res.data.statusCode == 200) {
+          this.rolesList = res.data.data;
+        } else {
+          // console.log(res.data.message);
+        }
+      } catch (error) {
+        // console.log(error);
+      }
+    },
   },
 });

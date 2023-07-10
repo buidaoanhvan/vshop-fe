@@ -130,7 +130,6 @@ export default {
           this.shop_address
         );
         this.shop_name = "";
-        this.fileList = [];
         this.imgUrl = "";
         this.visible = false;
       } else {

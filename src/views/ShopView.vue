@@ -13,14 +13,14 @@
         <div>
           <AddShop></AddShop>
         </div>
-        <div>
+        <!-- <div>
           <a-input-search
             v-model:value="value"
             placeholder="Tìm kiếm"
             :style="{ width: isMobile ? '100%' : '200px' }"
             @search="onSearch"
           />
-        </div>
+        </div> -->
       </a-row>
       <div
         :style="{
@@ -50,6 +50,12 @@
                 </template>
                 <a-card-meta :title="`Shop: ${item.name}`"></a-card-meta>
                 <a-card-meta :title="`Địa Chỉ: ${item.address}`"> </a-card-meta>
+                <a-card-meta
+                  :title="
+                    item.status == 2 ? 'Ngừng hoạt động' : 'Đang hoạt động'
+                  "
+                >
+                </a-card-meta>
                 <template #actions>
                   <EditShop :shop="item"></EditShop>
                 </template>
