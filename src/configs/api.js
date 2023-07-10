@@ -1,6 +1,6 @@
 // const url = "https://api-cmsvc.codezip.one";
 // const url = "http://192.168.0.16:8888";
-const url = "http://localhost:8888";
+const url = "https://api-qr.codezip.one";
 const api_link = {
   login: url + "/v1/api/auth/login",
   register: url + "/auth/register",
