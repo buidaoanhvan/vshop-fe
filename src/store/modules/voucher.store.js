@@ -15,7 +15,7 @@ export const voucherStore = defineStore({
     async getVoucherAll() {
       try {
         const res = await Axios.get(api_link.voucher);
-        // console.log(res.data);
+        console.log(res.data);
         if (res.data.code == "00") {
           this.listVoucher = res.data.data;
         } else {

@@ -117,12 +117,12 @@ export default {
         //   title: "Đối tác",
         //   icon: "BankOutlined",
         // },
-        {
-          routerName: "layvoucher",
-          key: "layvoucher",
-          title: "Lấy voucher",
-          icon: "BranchesOutlined",
-        },
+        // {
+        //   routerName: "layvoucher",
+        //   key: "layvoucher",
+        //   title: "Lấy voucher",
+        //   icon: "BranchesOutlined",
+        // },
         // {
         //   routerName: "yeucau",
         //   key: "yeucau",
