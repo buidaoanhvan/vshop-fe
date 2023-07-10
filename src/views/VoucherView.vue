@@ -42,7 +42,6 @@
         }"
       >
         <a-table
-          v-if="!isMobile"
           :columns="columns"
           :data-source="filteredVouchers"
           :pagination="false"
@@ -56,9 +55,6 @@
             </template>
             <template v-else-if="column.key === 'max_discount'">
               {{ record.max_discount }}Đ
-            </template>
-            <template v-else-if="column.key === 'start_time'">
-              {{ dateTime(record.start_time) }}
             </template>
             <template v-else-if="column.key === 'end_time'">
               {{ dateTime(record.end_time) }}
@@ -83,132 +79,6 @@
             </template>
           </template>
         </a-table>
-        <div v-else>
-          <a-card
-            v-for="item in listVoucher"
-            :key="item.id"
-            style="margin-bottom: 16px"
-          >
-            <div
-              style="
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-bottom: 16px;
-              "
-            >
-              <a-image :width="100" :max-height="100" :src="item.image" />
-            </div>
-            <div style="display: flex; align-items: flex-start">
-              <strong style="margin-right: 10px; white-space: nowrap"
-                >Tên voucher:</strong
-              >
-              <p
-                style="
-                  max-width: 300px;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  white-space: nowrap;
-                "
-              >
-                {{ item.title }}
-              </p>
-            </div>
-            <div style="display: flex; align-items: flex-start">
-              <strong style="margin-right: 10px; white-space: nowrap"
-                >Mô tả:</strong
-              >
-              <p
-                style="
-                  max-width: 300px;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  white-space: nowrap;
-                "
-              >
-                {{ item.description }}
-              </p>
-            </div>
-            <div style="display: flex; align-items: flex-start">
-              <strong style="margin-right: 10px; white-space: nowrap"
-                >Giá trị giảm:</strong
-              >
-              <p
-                style="
-                  max-width: 300px;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  white-space: nowrap;
-                "
-              >
-                {{ getDiscountValue(item) }}
-              </p>
-            </div>
-            <div style="display: flex; align-items: flex-start">
-              <strong style="margin-right: 10px; white-space: nowrap"
-                >Giảm tối đa:</strong
-              >
-              <p
-                style="
-                  max-width: 300px;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  white-space: nowrap;
-                "
-              >
-                {{ item.max_discount }}Đ
-              </p>
-            </div>
-            <div style="display: flex; align-items: flex-start">
-              <strong style="margin-right: 10px; white-space: nowrap"
-                >Ngày bắt đầu:</strong
-              >
-              <p
-                style="
-                  max-width: 300px;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  white-space: nowrap;
-                "
-              >
-                {{ dateTime(item.start_time) }}
-              </p>
-            </div>
-            <div style="display: flex; align-items: flex-start">
-              <strong style="margin-right: 10px; white-space: nowrap"
-                >Ngày kết thúc:</strong
-              >
-              <p
-                style="
-                  max-width: 300px;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  white-space: nowrap;
-                "
-              >
-                {{ dateTime(item.end_time) }}
-              </p>
-            </div>
-            <div style="position: absolute; top: 17px; right: 17px">
-              <a-dropdown-button>
-                <template #overlay>
-                  <a-menu>
-                    <a-menu-item key="1">
-                      <EditVoucher :voucher="item"></EditVoucher>
-                    </a-menu-item>
-                    <a-menu-item key="2">
-                      <AddCodeVoucher :voucher="item"></AddCodeVoucher>
-                    </a-menu-item>
-                    <a-menu-item key="3">
-                      <ShowCodeVoucher :voucher="item"></ShowCodeVoucher>
-                    </a-menu-item>
-                  </a-menu>
-                </template>
-                <template #icon><DownOutlined /></template>
-              </a-dropdown-button>
-            </div>
-          </a-card>
-        </div>
       </div>
     </div>
   </a-layout-content>
@@ -278,9 +148,9 @@ export default {
           key: "title",
         },
         {
-          title: "Mô tả",
-          dataIndex: "description",
-          key: "description",
+          title: "Tên cửa hàng",
+          dataIndex: "name",
+          key: "name",
         },
         {
           title: "Giá trị giảm",
@@ -296,14 +166,6 @@ export default {
           key: "max_discount",
           customRender: (value) => {
             return `${value}Đ`;
-          },
-        },
-        {
-          title: "Ngày bắt đầu",
-          dataIndex: "start_time",
-          key: "start_time",
-          customRender: (value) => {
-            return this.dateTime(value);
           },
         },
         {
@@ -400,7 +262,7 @@ export default {
 }
 .ant-image-img {
   width: 100%;
-  max-height: 100px;
+  max-height: 100%;
   vertical-align: middle;
 }
 </style>
