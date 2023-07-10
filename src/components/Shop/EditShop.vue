@@ -19,6 +19,17 @@
       placeholder="Địa Chỉ Cửa Hàng"
       style="margin-bottom: 15px"
     />
+    <div class="select-box">
+      <a-select
+        v-model:value="status"
+        placeholder="Chọn Trạng Thái"
+        style="width: 100%; margin-bottom: 15px"
+        :options="options_status"
+        @change="handleChangeStatus"
+      ></a-select>
+    </div>
+    <br />
+
     <a-upload
       v-model:file-list="fileList"
       list-type="picture"
@@ -55,11 +66,22 @@ export default {
       name: "",
       address: "",
       fileList: [],
+      status: "",
       imgUrl: "",
       headers: {
         authorization: `Bearer ${this.auth.user.token}`,
       },
       url_upload: api_link.upload,
+      options_status: [
+        {
+          value: 1,
+          label: "Đang hoạt động",
+        },
+        {
+          value: 2,
+          label: "Ngừng hoạt động",
+        },
+      ],
     };
   },
 
@@ -68,18 +90,28 @@ export default {
       this.visible = true;
       this.name = this.shop.name;
       this.address = this.shop.address;
+      this.status = this.shop.status;
       this.imgUrl = this.shop.logo;
     },
     handleOk() {
       this.fileList.forEach((element) => {
         this.imgUrl = element.response.url;
       });
-      this.shopS.updateShop(this.shop.id, this.name, this.address, this.imgUrl);
+      this.shopS.updateShop(
+        this.shop.id,
+        this.name,
+        this.address,
+        this.status,
+        this.imgUrl
+      );
       this.name = "";
       this.address = "";
-      this.fileList = [];
+      this.status = "";
       this.imgUrl = "";
       this.visible = false;
+    },
+    handleChangeStatus(value) {
+      this.status = value;
     },
   },
 };

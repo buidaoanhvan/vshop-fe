@@ -61,14 +61,16 @@ export const shopStore = defineStore({
       }
     },
 
-    async updateShop(id, name, address, logo) {
+    async updateShop(id, name, address, status, logo) {
       try {
         const res = await Axios.patch(api_link.shop_update + "/" + id, {
           name,
           address,
+          status,
           logo,
         });
         if (res.data.code == "00") {
+          console.log(res);
           this.getShopAll();
           message.success("Cập nhật thành công");
         } else {

@@ -13,7 +13,7 @@
         <div>
           <AddVoucher></AddVoucher>
         </div>
-        <div>
+        <!-- <div>
           <a-input-search
             v-model:value="value"
             placeholder="Tìm kiếm"
@@ -32,7 +32,7 @@
             :fieldNames="{ label: 'name', value: 'id' }"
             @change="handleSeachShop"
           ></a-select>
-        </div>
+        </div> -->
       </a-row>
       <div
         :style="{
@@ -238,9 +238,6 @@ export default {
     const shopS = shopStore();
     const { listShop } = storeToRefs(shopS);
     const selectedShopId = ref(null);
-    const handleSeachShop = (value) => {
-      selectedShopId.value = value;
-    };
     const filteredVouchers = computed(() => {
       if (selectedShopId.value) {
         return listVoucher.value.filter(
@@ -260,7 +257,6 @@ export default {
       shopS,
       listShop,
       selectedShopId,
-      handleSeachShop,
       filteredVouchers,
     };
   },
@@ -373,12 +369,6 @@ export default {
     },
     // onSearch(value) {
     //   // Xử lý sự kiện tìm kiếm
-    // },
-    filterSeachShop(input, option) {
-      return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-    },
-    // handleChangeShop(value) {
-    //   this.shop_id = value;
     // },
   },
 };
