@@ -27,12 +27,18 @@
           style="margin-bottom: 15px"
         />
         <!-- Hình ảnh: -->
-        <a-typography-text type="secondary">Hình ảnh:</a-typography-text>
-        <a-input
-          v-model:value="image"
-          placeholder="Hình ảnh"
-          style="margin-bottom: 15px"
-        />
+        <a-upload
+          v-model:file-list="fileList"
+          list-type="picture"
+          :max-count="1"
+          :action="url_upload"
+          :headers="headers"
+        >
+          <a-button>
+            <upload-outlined></upload-outlined>
+            Thay ảnh Voucher
+          </a-button>
+        </a-upload>
         <!-- Thương hiệu cung cấp: -->
         <div class="select-box">
           <a-typography-text type="secondary"
@@ -103,13 +109,16 @@
 <script>
 import { shopStore, voucherStore } from "@/store";
 import { storeToRefs } from "pinia";
+import { authStore } from "../../store/index";
+import api_link from "@/configs/api";
 
 export default {
   setup() {
+    const auth = authStore();
     const shopS = shopStore();
     const voucherS = voucherStore();
     const { listShop } = storeToRefs(shopS);
-    return { shopS, listShop, voucherS };
+    return { shopS, listShop, voucherS, auth };
   },
   props: ["voucher"],
   data() {
@@ -121,7 +130,12 @@ export default {
       discount_value: "",
       discount_type: "",
       max_discount: "",
-      image: "",
+      imgUrl: "",
+      fileList: [],
+      headers: {
+        authorization: `Bearer ${this.auth.user.token}`,
+      },
+      url_upload: api_link.upload,
       start_time: "",
       end_time: "",
       options_discount_type: [
@@ -148,7 +162,8 @@ export default {
       this.shopId = this.voucher.shop_id;
       this.title = this.voucher.title.toString();
       this.description = this.voucher.description.toString();
-      this.image = this.voucher.image.toString();
+      // this.image = this.voucher.image.toString();
+      this.imgUrl = this.voucher.image;
       this.discount_value = this.voucher.discount_value.toString();
       this.discount_type = this.voucher.discount_type;
       this.max_discount = this.voucher.max_discount.toString();
@@ -177,6 +192,9 @@ export default {
     },
 
     handleOk() {
+      this.fileList.forEach((element) => {
+        this.imgUrl = element.response.url;
+      });
       // <!-- id	shopId	title	description	image	status	discount_value	discount_type	max_discount	start_time	end_time -->
       if (
         this.title &&
@@ -192,7 +210,8 @@ export default {
           this.shopId,
           this.title,
           this.description,
-          this.image,
+          // this.image,
+          this.imgUrl,
           parseInt(this.discount_value),
           parseInt(this.discount_type),
           parseInt(this.max_discount),
@@ -202,7 +221,8 @@ export default {
         this.shopId = "";
         this.title = "";
         this.description = "";
-        this.image = "";
+        // this.image = "";
+        this.imgUrl = "";
         this.discount_value = "";
         this.discount_type = "";
         this.max_discount = "";

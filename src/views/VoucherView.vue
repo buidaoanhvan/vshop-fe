@@ -97,7 +97,7 @@
                 margin-bottom: 16px;
               "
             >
-              <a-image :width="100" :height="100" :src="item.image" />
+              <a-image :width="100" :max-height="100" :src="item.image" />
             </div>
             <div style="display: flex; align-items: flex-start">
               <strong style="margin-right: 10px; white-space: nowrap"
@@ -397,5 +397,10 @@ export default {
 }
 .content {
   margin: 24px 16px 0;
+}
+.ant-image-img {
+  width: 100%;
+  max-height: 100px;
+  vertical-align: middle;
 }
 </style>
