@@ -45,7 +45,7 @@
           <p
             style="font-size: 15px; color: red; text-align: center; margin: 8px"
           >
-            HSD: {{ codeDetail.vouchers.end_time }}
+            HSD: {{ getLocalEnd(codeDetail.vouchers.end_time) }}
           </p>
         </a-tag>
       </div>
@@ -153,6 +153,10 @@ export default {
         this.okText = "Đóng";
         return "Đã dùng";
       }
+    },
+
+    getLocalEnd(endTime) {
+      return this.$dayjs.utc(endTime).local().format("DD/MM/YYYY HH:mm:ss");
     },
 
     showCamera() {
