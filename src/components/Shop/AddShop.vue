@@ -34,13 +34,13 @@
     </a-input>
     <a-input
       v-model:value="fullname"
-      placeholder="Họ Tên"
+      placeholder="Họ Tên Người Đại Diện"
       style="margin-bottom: 15px"
       required
     />
     <a-input
       v-model:value="phone"
-      placeholder="SDT"
+      placeholder="Liên Hệ"
       style="margin-bottom: 15px"
       required
     />
@@ -114,26 +114,21 @@ export default {
     showModal() {
       this.visible = true;
     },
-    handleOk() {
-      if (this.shop_name && this.fileList.length > 0) {
-        this.fileList.forEach((element) => {
-          this.imgUrl = element.response.url;
-        });
-        console.log(this.shop_address);
-        this.shop.addShop(
-          this.email,
-          this.password,
-          this.fullname,
-          this.phone,
-          this.shop_name,
-          this.imgUrl,
-          this.shop_address
-        );
-        this.shop_name = "";
-        this.imgUrl = "";
+    async handleOk() {
+      this.fileList.forEach((element) => {
+        this.imgUrl = element.response.url;
+      });
+      const status = await this.shop.addShop(
+        this.email,
+        this.password,
+        this.fullname,
+        this.phone,
+        this.shop_name,
+        this.imgUrl,
+        this.shop_address
+      );
+      if (status == "00") {
         this.visible = false;
-      } else {
-        this.$message.error("Vui lòng nhập tên Cửa Hàng và hình ảnh");
       }
     },
   },

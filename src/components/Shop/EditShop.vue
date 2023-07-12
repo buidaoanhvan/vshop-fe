@@ -104,10 +104,6 @@ export default {
         this.status,
         this.imgUrl
       );
-      this.name = "";
-      this.address = "";
-      this.status = "";
-      this.imgUrl = "";
       this.visible = false;
     },
     handleChangeStatus(value) {

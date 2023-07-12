@@ -13,14 +13,13 @@ export const shopStore = defineStore({
     async getShopAll() {
       try {
         const res = await Axios.get(api_link.shop);
-        // console.log(res.data);
         if (res.data.code == "00") {
           this.listShop = res.data.data;
         } else {
-          // console.log(res.data.message);
+          message.error("Lỗi hệ thống vui lòng thử lại sau");
         }
       } catch (error) {
-        console.log(error);
+        message.error("Lỗi hệ thống vui lòng thử lại sau");
       }
     },
 
@@ -34,7 +33,6 @@ export const shopStore = defineStore({
       shop_address
     ) {
       try {
-        console.log(shop_address);
         const res = await Axios.post(api_link.shop, {
           email,
           password,
@@ -45,18 +43,21 @@ export const shopStore = defineStore({
           shop_address,
         });
         if (res.data.code == "00") {
-          this.getShopAll();
           message.success("Thêm Cửa Hàng Thành công");
+          this.getShopAll();
+          return res.data.code;
+        } else if (res.data.code == "01") {
+          message.warning("Email đã tồn tại");
         } else {
           message.warning("Vui lòng kiểm tra lại");
         }
       } catch (error) {
-        if (error.response.status === 400) {
-          error.response.data.message.forEach((element) => {
-            message.error(element);
+        if (error.response.data.code == "04") {
+          error.response.data.data.forEach((element) => {
+            message.warning(element.msg);
           });
         } else {
-          message.error("Vui lòng thử lại sau");
+          message.error("Lỗi hệ thống vui lòng thử lại sau");
         }
       }
     },
@@ -70,19 +71,18 @@ export const shopStore = defineStore({
           logo,
         });
         if (res.data.code == "00") {
-          console.log(res);
           this.getShopAll();
           message.success("Cập nhật thành công");
         } else {
           message.warning("Vui lòng kiểm tra lại");
         }
       } catch (error) {
-        if (error.response.status === 400) {
-          error.response.data.message.forEach((element) => {
-            message.error(element);
+        if (error.response.data.code == "04") {
+          error.response.data.data.forEach((element) => {
+            message.warning(element.msg);
           });
         } else {
-          message.error("Vui lòng thử lại sau");
+          message.error("Lỗi hệ thống vui lòng thử lại sau");
         }
       }
     },
