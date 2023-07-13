@@ -4,108 +4,102 @@
   >
   <a-modal
     v-model:visible="visible"
-    width="800px"
     title="Thêm Voucher"
     cancelText="Hủy"
     okText="Thêm"
     :maskClosable="false"
+    width="800px"
+    centered
+    wrap-class-name="full-modal"
     @ok="handleOk"
   >
-    <a-row>
-      <a-col :span="12" class="box-add-vc">
-        <!-- Tên voucher: -->
-        <a-typography-text type="secondary">Tên voucher:</a-typography-text>
-        <a-input
-          v-model:value="title"
-          placeholder="Tên voucher"
-          style="margin-bottom: 15px"
-        />
-        <!-- Mô tả: -->
-        <a-typography-text type="secondary">Mô tả:</a-typography-text>
-        <a-textarea
-          :rows="2"
-          v-model:value="description"
-          placeholder="Mô tả"
-          style="margin-bottom: 15px"
-        />
-        <!-- Cửa Hàng cung cấp: -->
-        <div class="select-box">
-          <a-typography-text type="secondary"
-            >Cửa Hàng cung cấp:</a-typography-text
-          >
-          <a-select
-            v-model:value="shop_id"
-            show-search
-            placeholder="Chọn Cửa Hàng"
-            style="width: 100%; margin-bottom: 15px"
-            :options="listShop"
-            :filter-option="filterShop"
-            :fieldNames="{ label: 'name', value: 'id' }"
-            @change="handleChangeShop"
-          ></a-select>
-        </div>
-        <!-- Ngày bắt đầu: -->
-        <a-typography-text type="secondary">Ngày bắt đầu:</a-typography-text>
-        <a-date-picker
-          show-time
-          v-model:value="start_time"
-          placeholder="Ngày bắt đầu"
-          style="width: 100%; margin-bottom: 15px"
-          @change="onChangeStart"
-        />
-        <!-- Hình ảnh: -->
-        <a-upload
-          v-model:file-list="fileList"
-          list-type="picture"
-          :max-count="1"
-          :action="url_upload"
-          :headers="headers"
-        >
-          <a-button>
-            <upload-outlined></upload-outlined>
-            Tải hình ảnh voucher
-          </a-button>
-        </a-upload>
-      </a-col>
-      <a-col :span="12" class="box-add-vc">
-        <!-- Giá trị voucher: -->
-        <a-typography-text type="secondary">Giá trị voucher:</a-typography-text>
-        <a-input
-          v-model:value="discount_value"
-          placeholder="Giá trị giảm"
-          style="margin-bottom: 15px"
-        />
-        <!-- Loại voucher giảm: -->
-        <div class="select-box">
-          <a-typography-text type="secondary"
-            >Loại voucher giảm:</a-typography-text
-          >
-          <a-select
-            v-model:value="discount_type"
-            placeholder="Chọn loại giảm giá"
-            style="width: 100%; margin-bottom: 15px"
-            :options="options_discount_type"
-            @change="handleChangeDiscountType"
-          ></a-select>
-        </div>
-        <!-- Giảm tối đa: -->
-        <a-typography-text type="secondary">Giảm tối đa:</a-typography-text>
-        <a-input
-          v-model:value="max_discount"
-          placeholder="Giảm tối đa"
-          style="margin-bottom: 15px"
-        />
-        <!-- Ngày kết thúc: -->
-        <a-typography-text type="secondary">Ngày kết thúc:</a-typography-text>
-        <a-date-picker
-          show-time
-          v-model:value="end_time"
-          placeholder="Ngày kết thúc"
-          style="width: 100%; margin-bottom: 15px"
-          @change="onChangeEnd"
-        />
-      </a-col>
-    </a-row>
+    <!-- Tên voucher: -->
+    <a-typography-text type="secondary">Tên voucher:</a-typography-text>
+    <a-input
+      v-model:value="title"
+      placeholder="Tên voucher"
+      style="margin-bottom: 15px"
+    />
+    <!-- Mô tả: -->
+    <a-typography-text type="secondary">Mô tả:</a-typography-text>
+    <a-textarea
+      :rows="2"
+      v-model:value="description"
+      placeholder="Mô tả"
+      style="margin-bottom: 15px"
+    />
+    <!-- Cửa Hàng cung cấp: -->
+    <div class="select-box">
+      <a-typography-text type="secondary">Cửa Hàng cung cấp:</a-typography-text>
+      <a-select
+        v-model:value="shop_id"
+        show-search
+        placeholder="Chọn Cửa Hàng"
+        style="width: 100%; margin-bottom: 15px"
+        :options="listShop"
+        :filter-option="filterShop"
+        :fieldNames="{ label: 'name', value: 'id' }"
+        @change="handleChangeShop"
+      ></a-select>
+    </div>
+    <!-- Loại voucher giảm: -->
+    <div class="select-box">
+      <a-typography-text type="secondary">Loại voucher giảm:</a-typography-text>
+      <a-select
+        v-model:value="discount_type"
+        placeholder="Chọn loại giảm giá"
+        style="width: 100%; margin-bottom: 15px"
+        :options="options_discount_type"
+        @change="handleChangeDiscountType"
+      ></a-select>
+    </div>
+    <!-- Giá trị voucher: -->
+    <a-typography-text type="secondary">Giá trị voucher:</a-typography-text>
+    <a-input
+      v-model:value="discount_value"
+      placeholder="Giá trị giảm"
+      style="margin-bottom: 15px"
+    />
+    <!-- Giảm tối đa: -->
+    <a-typography-text type="secondary">Giảm tối đa:</a-typography-text>
+    <a-input
+      v-model:value="max_discount"
+      placeholder="Giảm tối đa"
+      style="margin-bottom: 15px"
+    />
+    <!-- Ngày bắt đầu: -->
+    <a-typography-text type="secondary">Ngày bắt đầu:</a-typography-text>
+    <a-date-picker
+      show-time
+      v-model:value="start_time"
+      :format="dateFormat"
+      placeholder="Ngày bắt đầu"
+      style="width: 100%; margin-bottom: 15px"
+      @change="onChangeStart"
+    />
+    <!-- Ngày kết thúc: -->
+    <a-typography-text type="secondary">Ngày kết thúc:</a-typography-text>
+    <a-date-picker
+      show-time
+      v-model:value="end_time"
+      :format="dateFormat"
+      placeholder="Ngày kết thúc"
+      style="width: 100%; margin-bottom: 15px"
+      @change="onChangeEnd"
+    />
+    <!-- Hình ảnh: -->
+    <a-upload
+      v-model:file-list="fileList"
+      list-type="picture"
+      :max-count="1"
+      :action="url_upload"
+      :headers="headers"
+    >
+      <a-button>
+        <upload-outlined></upload-outlined>
+        Tải hình ảnh voucher
+      </a-button>
+    </a-upload>
   </a-modal>
 </template>
 <script>
@@ -116,11 +110,12 @@ import api_link from "@/configs/api";
 
 export default {
   setup() {
+    const dateFormat = "YYYY/MM/DD";
     const shopS = shopStore();
     const voucherS = voucherStore();
     const auth = authStore();
     const { listShop } = storeToRefs(shopS);
-    return { shopS, listShop, voucherS, auth };
+    return { shopS, listShop, voucherS, auth, dateFormat };
   },
   components: {
     UploadOutlined,
@@ -165,10 +160,6 @@ export default {
       this.shopS.getShopAll();
     },
 
-    filterShop(input, option) {
-      return option.name.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-    },
-
     handleChangeDiscountType(value) {
       this.discount_type = value;
     },
@@ -186,7 +177,6 @@ export default {
     },
 
     handleOk() {
-      // <!-- id shopId	title	description	image	status	discount_value	discount_type	max_discount	start_time	end_time -->
       if (
         this.title &&
         this.description &&

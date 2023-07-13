@@ -69,7 +69,6 @@ export const voucherStore = defineStore({
 
     async updateVoucher(
       id,
-      shop_id,
       title,
       description,
       image,
@@ -81,7 +80,6 @@ export const voucherStore = defineStore({
     ) {
       try {
         const res = await Axios.patch(api_link.voucher_update + "/" + id, {
-          shop_id,
           title,
           description,
           image,
@@ -93,7 +91,7 @@ export const voucherStore = defineStore({
         });
         if (res.data.code == "00") {
           this.getVoucherAll();
-          message.success("Cập nhật thành công");
+          return res.data.code;
         } else {
           message.warning("Vui lòng kiểm tra lại");
         }
