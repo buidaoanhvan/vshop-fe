@@ -1,12 +1,12 @@
 <template>
-  <a key="list-loadmore-edit" @click="showModal">Sửa</a>
   <a-modal
     v-model:visible="visible"
     width="500px"
-    :title="`Chỉnh sửa Cửa Hàng ${shop.name}`"
+    :title="`Chỉnh sửa Cửa Hàng ${shopS.name}`"
     cancelText="Hủy"
     okText="Cập nhật"
     :maskClosable="false"
+    wrap-class-name="full-modal"
     @ok="handleOk"
   >
     <a-input
@@ -45,33 +45,48 @@
   </a-modal>
 </template>
 <script>
-import { UploadOutlined } from "@ant-design/icons-vue";
 import { authStore } from "../../store/index";
 import { shopStore } from "../../store/index";
 import api_link from "@/configs/api";
 
 export default {
-  components: {
-    UploadOutlined,
-  },
-  props: ["shop"],
   setup() {
     const auth = authStore();
     const shopS = shopStore();
     return { auth, shopS };
   },
+
+  props: ["isEdit", "item"],
+
+  watch: {
+    isEdit: function (n) {
+      this.visible = n;
+    },
+    visible: function (n) {
+      if (n == false) {
+        this.$emit("close-is-edit");
+      }
+    },
+    item: function (n) {
+      this.name = n.name;
+      this.address = n.address;
+      this.status = n.status;
+      this.imgUrl = n.imgUrl;
+    },
+  },
+
   data() {
     return {
       visible: false,
       name: "",
       address: "",
-      fileList: [],
       status: "",
       imgUrl: "",
+      url_upload: api_link.upload,
+      fileList: [],
       headers: {
         authorization: `Bearer ${this.auth.user.token}`,
       },
-      url_upload: api_link.upload,
       options_status: [
         {
           value: 1,
@@ -86,19 +101,20 @@ export default {
   },
 
   methods: {
-    showModal() {
-      this.visible = true;
-      this.name = this.shop.name;
-      this.address = this.shop.address;
-      this.status = this.shop.status;
-      this.imgUrl = this.shop.logo;
-    },
+    // showModal() {
+    //   this.visible = true;
+    //   this.name = this.shop.name;
+    //   this.address = this.shop.address;
+    //   this.status = this.shop.status;
+    //   this.imgUrl = this.shop.logo;
+    // },
+
     handleOk() {
       this.fileList.forEach((element) => {
         this.imgUrl = element.response.url;
       });
       this.shopS.updateShop(
-        this.shop.id,
+        this.item?.id,
         this.name,
         this.address,
         this.status,

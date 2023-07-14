@@ -56,7 +56,14 @@
                 </template>
                 <a-card-meta :title="item.name"></a-card-meta>
                 <template #actions>
-                  <EditShop :shop="item"></EditShop>
+                  <a @click="showEditShop(item)"
+                    >Sửa
+                    <EditShop
+                      :is-Edit="isEdit"
+                      :item="shopEdit"
+                      @close-is-edit="closeEdit"
+                    ></EditShop>
+                  </a>
                 </template>
               </a-card>
             </a-list-item>
@@ -81,12 +88,30 @@ export default {
     return { shop, listShop };
   },
 
+  data() {
+    return {
+      shopEdit: null,
+      isEdit: false,
+    };
+  },
+
   created() {
     this.shop.getShopAll();
   },
 
   updated() {
     this.shop.updateShop();
+  },
+
+  methods: {
+    showEditShop(item) {
+      this.shopEdit = item;
+      this.isEdit = true;
+    },
+
+    closeEdit() {
+      this.isEdit = false;
+    },
   },
 };
 </script>

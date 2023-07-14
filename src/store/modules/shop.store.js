@@ -72,7 +72,8 @@ export const shopStore = defineStore({
         });
         if (res.data.code == "00") {
           this.getShopAll();
-          message.success("Cập nhật thành công");
+          return res.data.code;
+          // message.success("Cập nhật thành công");
         } else {
           message.warning("Vui lòng kiểm tra lại");
         }
@@ -82,7 +83,7 @@ export const shopStore = defineStore({
             message.warning(element.msg);
           });
         } else {
-          message.error("Lỗi hệ thống vui lòng thử lại sau");
+          message.error("Vui lòng thử lại sau");
         }
       }
     },
