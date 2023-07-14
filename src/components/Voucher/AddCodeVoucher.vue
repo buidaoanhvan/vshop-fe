@@ -1,9 +1,8 @@
 <template>
-  <a @click="showModal">Tạo QRCode</a>
   <a-modal
     v-model:visible="visible"
     width="500px"
-    :title="`Nhập số lượng QRCode của Voucher ( ${voucher.title} )`"
+    :title="`Nhập số lượng QRCode của Voucher ( ${voucherTitle} )`"
     cancelText="Hủy"
     okText="Nhập"
     :maskClosable="false"
@@ -25,21 +24,31 @@ export default {
     const voucherS = voucherStore();
     return { voucherS };
   },
-  props: ["voucher"],
-
+  props: ["isVoucherCode", "item"],
+  watch: {
+    isVoucherCode: function (n) {
+      this.visible = n;
+    },
+    visible: function (n) {
+      if (n == false) {
+        this.$emit("close-is-add-code");
+      }
+    },
+    item: function (n) {
+      this.voucherId = n.id;
+      this.voucherTitle = n.title;
+    },
+  },
   data() {
     return {
       visible: false,
-      voucherId: this.voucher.id,
+      voucherId: "",
+      voucherTitle: "",
       quantity: "",
     };
   },
 
   methods: {
-    showModal() {
-      this.visible = true;
-      this.voucherId = this.voucher.id;
-    },
     handleOk() {
       if (this.quantity > 0) {
         this.voucherS.createCodeVoucher(this.voucherId, this.quantity);

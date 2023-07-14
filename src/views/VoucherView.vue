@@ -63,8 +63,8 @@
                     <a-dropdown>
                       <template #overlay>
                         <a-menu @click="handleMenuClick">
-                          <a-menu-item key="1" :idVoucher="item.id">
-                            <AddCodeVoucher :voucher="item"></AddCodeVoucher>
+                          <a-menu-item key="1" :item="item">
+                            Tạo QRCode
                           </a-menu-item>
                           <a-menu-item key="2" :item="item">
                             <UserOutlined />
@@ -74,9 +74,9 @@
                             <UserOutlined />
                             Duyệt
                           </a-menu-item>
-                          <a-menu-item key="4" :idVoucher="item.id">
+                          <a-menu-item key="4" :item="item">
                             <UserOutlined />
-                            <ShowCodeVoucher :voucher="item"></ShowCodeVoucher>
+                            Xem QRCode
                           </a-menu-item>
                         </a-menu>
                       </template>
@@ -102,6 +102,18 @@
       :item="voucherEdit"
       @close-is-edit="closeEdit"
     ></EditVoucher>
+    <AddCodeVoucher
+      :isVoucherCode="isVoucherCode"
+      :item="voucherAddCode"
+      @close-is-add-code="closeAddCode"
+    >
+    </AddCodeVoucher>
+    <ShowCodeVoucher
+      :isVoucherViewCode="isVoucherViewCode"
+      :item="voucherViewCode"
+      @close-is-view-code="closeViewCode"
+    >
+    </ShowCodeVoucher>
   </a-layout-content>
 </template>
 
@@ -139,8 +151,12 @@ export default {
       value: "",
       voucherDetail: null,
       voucherEdit: null,
+      voucherAddCode: null,
+      voucherViewCode: null,
       isDetail: false,
       isEdit: false,
+      isVoucherCode: false,
+      isVoucherViewCode: false,
     };
   },
 
@@ -154,8 +170,14 @@ export default {
     },
 
     handleMenuClick(e) {
+      if (e.key == 1) {
+        this.ShowCodeVoucher(e.item.item);
+      }
       if (e.key == 2) {
         this.showEditVoucher(e.item.item);
+      }
+      if (e.key == 4) {
+        this.showViewCodeVoucher(e.item.item);
       }
     },
 
@@ -169,12 +191,30 @@ export default {
       this.isEdit = true;
     },
 
+    ShowCodeVoucher(item) {
+      this.voucherAddCode = item;
+      this.isVoucherCode = true;
+    },
+
+    showViewCodeVoucher(item) {
+      this.voucherViewCode = item;
+      this.isVoucherViewCode = true;
+    },
+
     closeDetail() {
       this.isDetail = false;
     },
 
     closeEdit() {
       this.isEdit = false;
+    },
+
+    closeAddCode() {
+      this.isVoucherCode = false;
+    },
+
+    closeViewCode() {
+      this.isVoucherViewCode = false;
     },
   },
 };
